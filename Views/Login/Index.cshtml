@@ -1,0 +1,38 @@
+﻿@model Final_Project_3amal.Models.User
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="../CSS/Login.Css" />
+</head>
+<body class="login" style="background-image: url('@Url.Content("~/Images/Login.jpg")');">
+    <form method="post">
+        <h3>Login</h3>
+
+        <label for="username">Email:</label>
+        <input type="email" placeholder="Email" name="Email" required />
+
+        <label for="password">Password:</label>
+        <input type="password" placeholder="Password" name="password" required />
+
+        <div>
+            @if (ViewBag.Error != null){
+            <p class="error" style="color:red">@ViewBag.Error</p>
+            }
+        </div>
+
+        <button class="button">Log In</button>
+
+        <p class="fb">
+            don't have an account? <a asp-action="Index" asp-controller="Registration"> Sign Up</a>
+        </p>
+    </form>
+
+   
+</body>
+</html>

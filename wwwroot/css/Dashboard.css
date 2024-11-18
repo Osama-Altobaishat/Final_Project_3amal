@@ -1,0 +1,250 @@
+﻿body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.dashboard-sidebar {
+    min-width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #343a40;
+}
+
+    .dashboard-sidebar .nav-link {
+        color: #fff;
+    }
+
+        .dashboard-sidebar .nav-link:hover {
+            background-color: #495057;
+        }
+
+.dashboard-content {
+    margin-left: 250px;
+}
+
+.navbar-custom {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.content-header {
+    margin: 20px 0px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px;
+}
+
+.content-table {
+    margin-bottom: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px;
+}
+
+footer {
+    margin-left: 250px;
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+
+.card {
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tr_color {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.topnav {
+    width: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+    .logo img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+    }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Styles for tablets */
+    .dashboard-sidebar {
+        display: none; 
+    }
+
+    .d-flex {
+        display: none !important;
+    }
+
+    .dashboard-content {
+        margin-left: 0px;
+    }
+
+    .topnav.responsive {
+        position: relative;
+    }
+
+        .topnav.responsive .div_rghit {
+            display: flex;
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin-top: 4px;
+        }
+
+        .topnav.responsive .div_center,
+        .topnav.responsive .div_left {
+            float: none;
+            display: flex;
+            text-align: left;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+    .div_center {
+        display: none;
+    }
+
+    .topnav a.icon {
+        float: right;
+        display: block;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Styles for large smartphones */
+    .dashboard-sidebar {
+        display: none;
+    }
+
+    .d-flex {
+        display: none !important;
+    }
+
+    .dashboard-content {
+        margin-left: 0px;
+    }
+}
+
+.flex-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+/*    align-items: center;
+    margin-bottom: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    padding: 10px;
+}
+.input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+    /* Label styling */
+    .input label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Input field styling */
+    .input input {
+        padding: 0.75rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-right:10px;
+    }
+
+        /* Input focus state */
+        .input input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+/* Button styling */
+.btns {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom:2px;
+}
+
+    /* Button hover effect */
+    .btns:hover {
+        background-color: #0056b3;
+    }
+
+    /* Button focus state */
+    .btns:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+.search {
+    padding: 8px 12px;
+    border: 1px solid #ced4da; /* Light border for input */
+    border-radius: 4px 0 0 4px; /* Rounded left side */
+    outline: none;
+    font-size: 16px;
+    width: 250px;
+    transition: all 0.3s ease;
+    width: 92%
+}
+    .search:focus {
+        border-color: #007bff; /* Change border color on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Light blue shadow on focus */
+    }
+.searchbtn {
+    padding: 8px 16px;
+    background-color: #007bff; /* Bootstrap blue color */
+    color: #fff;
+    border: none;
+    border-radius: 0 4px 4px 0; /* Rounded right side */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+    .searchbtn:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+    .searchbtn:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue shadow on focus */
+    }

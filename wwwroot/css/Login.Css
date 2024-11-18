@@ -1,0 +1,292 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap");
+
+*,
+*:before,
+*:after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+.flex_row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex_column {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.flex_space_between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.width_100 {
+    width: 100%;
+}
+
+.width_90 {
+    width: 90%;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Styles for tablets */
+    form {
+        width: 70% !important;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Styles for large smartphones */
+    .width_90 {
+        width: 100% !important;
+    }
+}
+.login {
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+/*    background-image: url('@Url.Content("~/Images/Login.jpg")');*/
+    background-size: cover;
+    background-position: 90%;
+}
+.signUp {
+    background-color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+/*    background-image: url('@Url.Content("~/Images/Login.jpg")');*/
+    background-size: cover;
+    background-position: 90%;
+    height: 140vh;
+}
+.signUp {
+    background-color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+/*    background-image: url('@Url.Content("~/Images/Login.jpg")');*/
+    background-size: cover;
+    background-position: 90%;
+/*    height: 140vh;*/
+}
+.signUp form {
+  width: 40%;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6), 5px 5px 20px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+  margin-top: 130px;
+  margin-bottom: 130px;
+}
+.login form {
+  width: 35%;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6), 5px 5px 20px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+}
+form * {
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+form h3 {
+  font-size: 32px;
+  line-height: 40px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  font-size: 14px;
+  padding: 0 5px;
+}
+input, textarea {
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 3px;
+    padding:  10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+#Image {
+    padding: 15px 10px;
+}
+
+::placeholder {
+  color: #e5e5e5;
+}
+input:hover, textarea:hover {
+    background-color: rgba(255, 255, 255, 0.09);
+    border: 1px solid #ffffff;
+}
+input:focus, textarea:focus {
+    background-color: rgba(255, 255, 255, 0.09);
+    border: 2px solid #ffffff;
+}
+.button {
+  margin-top: 30px;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.5), 0 0px 0px rgba(0, 0, 0, 0.5);
+  transform: scale(1);
+}
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5), 0 0px 30px rgba(0, 0, 0, 0.5);
+  transform: scale(1.01);
+}
+.fb {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.27);
+  color: #eaf0fb;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 18px;
+  padding: 15px 0;
+  border-radius: 5px;
+}
+.fb a {
+  color: #080710;
+  text-decoration: none;
+  padding-left: 5px;
+  font-weight: 600;
+}
+.fb a:hover {
+  text-decoration: underline;
+  color: rgb(8, 7, 16, 0.7);
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Styles for tablets */
+    form {
+        width: 70% !important;
+    }
+}
+@media (max-width: 767px) {
+  /* Styles for large smartphones */
+    form {
+        width: 95% !important;
+        padding: 20px 10px !important;
+    }
+}
+.container_UsersCatygory {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 50vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6), 5px 5px 20px rgba(8, 7, 16, 0.6);
+    padding: 50px 35px;
+}
+.signUp_UsersCatygory {
+    background-color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /*    background-image: url('@Url.Content("~/Images/Login.jpg")');*/
+    background-size: cover;
+    background-position: 90%;
+    height: 100vh;
+}
+.UsersCatygory {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fbl {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 100%;
+    height: 80%;
+    background-color: rgba(255, 255, 255, 0.27);
+    color: #eaf0fb;
+    text-align: center;
+    margin: 10px;
+    font-size: 18px;
+    padding: 15px 0;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+    .fbl a {
+        color: #080710;
+        padding-left: 5px;
+        font-weight: 600;
+    }
+
+        .fbl a:hover {
+            text-decoration: underline;
+            color: rgb(8, 7, 16, 0.7);
+        }
+.fbt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    color: #eaf0fb;
+    text-align: center;
+    margin: 10px;
+    font-size: 24px;
+    padding: 15px 0;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.name{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%
+}
+.name div{
+    
+    width: 100%
+}
+    .name div:first-child {
+        margin-right: 10px;
+    }

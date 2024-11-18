@@ -1,0 +1,72 @@
+﻿@model Final_Project_3amal.Models.User
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up for user</title>
+    <link rel="stylesheet" href="~/css/Login.Css" />
+</head>
+<body class="signUp" style="background-image: url('@Url.Content("~/Images/Login.jpg")');">
+    <form asp-action="ServiceProvider" asp-controller="Registration" enctype="multipart/form-data" method="post">
+        <h3>Sign Up for Service Provider</h3>
+        <div class="name">
+            
+            <div>
+                <label for="First_name">First name:</label>
+                <input type="text" name="FirstName" placeholder="First name" id="First_name" required />
+            </div>
+            <div>
+                <label for="Last_name">Last name:</label>
+                <input type="text" name="LastName" placeholder="Last name" id="Last_name" required />
+            </div>
+        </div>
+
+        <label for="Email">Email:</label>
+        <input type="email" name="Email" placeholder="Email" id="Email" required />
+
+        <label for="mobile_num">mobile Number:</label>
+        <input type="number" name="Phone" placeholder="mobile Number" id="mobile_num" required />
+
+        <div class="name">
+            
+            <div>
+                <label for="Image">Image:</label>
+                <input type="file" name="Image" placeholder="Image" id="Image" required />
+            </div>
+            <div>
+                <label for="BirthDate">BirthDate:</label>
+                <input type="date" name="BirthDate" placeholder="BirthDate" id="BirthDate" required />
+            </div>
+
+        </div>
+        <label for="password">Password:</label>
+        <input type="password" name="Password" placeholder="Password" id="password" required />
+
+        <label for="Confirmpassword">Confirm password:</label>
+        <input type="password" name="ConfirmPassword" placeholder="Confirm password" id="password" required />
+        <span class="error" style="color:red">@ViewBag.Error</span>
+        
+        <div class="name">
+            <div>
+                <label for="Location">Country:</label>
+                <input type="text" name="Location" placeholder="Country" id="Location" required />
+            </div>
+            <div>
+                <label for="City">City:</label>
+                <input type="text" name="City" placeholder="City" id="City" required />
+            </div>
+
+        </div>
+
+        <label for="About_me">About me:</label>
+        <textarea type="text" name="AboutUs" placeholder="About me" id="About_me" required></textarea>
+
+        <button class="button">Sign Up</button>
+        <p class="fb">do you have an account? <a asp-action="Index" asp-controller="Login">Log in</a></p>
+    </form>
+</body>
+</html>

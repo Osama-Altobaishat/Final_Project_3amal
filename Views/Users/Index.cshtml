@@ -1,0 +1,117 @@
+﻿@model (User Users,List<Final_Project_3amal.Models.Service> Services, List<Final_Project_3amal.Models.ImageService> ImageServices, List<Final_Project_3amal.Models.Category> Categories)
+
+@{
+    ViewData["Title"] = "@User.Identity.Name";
+}
+
+<link rel="stylesheet" href="~/css/profile.css" />
+
+<div class="flex_column width_100">
+    <div class="server_info_container">
+        <div class="server_info_left">
+            <div class="top_info">
+                <br />
+
+                <p>Location: @Model.Users.Location</p>
+                <p>Count services: @Model.Services.Count</p>
+                @* <p>Count rating: 20</p>
+
+                <div class="flex_column_left">
+                    <div class="Reviews_star">
+                        <span>Quality of Service: </span>
+                        <div class="star">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
+                        </div>
+                    </div>
+
+                    <div class="Reviews_star">
+                        <span>Communication: </span>
+                        <div class="star">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
+                        </div>
+                    </div>
+                    <div class="Reviews_star">
+                        <span>On-Time Delivery: </span>
+                        <div class="star">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <p>Order completion rate: 80%</p> *@
+
+            </div>
+            <div class="bottom_info">
+                <br />
+                <div>
+                    <img src="@Model.Users.Imagebath" alt="@Model.Users.FirstName @Model.Users.LastName" />
+                    <span>@Model.Users.FirstName @Model.Users.LastName</span>
+                </div>
+            </div>
+        </div>
+        <div class="server_info">
+            <div class="server_info_right">
+                <div class="server_info_text">
+                    <div class="flex_space_between">
+                        <h3 class="orange Suggestions">About me</h3>
+                    </div>
+                    <br />
+                    <p>
+                        @Model.Users.AboutUs
+                    </p>
+                    <br />
+                </div>
+            </div>
+            <div class="server_info_right">
+
+                <div>
+                    <br />
+                    <h3 class="orange Suggestions">My Services:</h3>
+                    <br />
+                    <div class="grid Sugistes_services">
+                       @if (Model.Services != null && Model.Services.Count > 0)
+                        {
+                            @foreach (var service in Model.Services)
+                            {
+                                <a asp-action="Index" asp-controller="ServesInfo"
+                                   asp-route-id="@service.Id"
+                                   asp-route-name="@service.Name"
+                                   asp-route-category="@service.Category.Name"
+                                   asp-route-categoryid="@service.CategoryId"
+                                   asp-route-description="@service.Description"
+                                   asp-route-price="@service.Price"
+                                   asp-route-ratingAvg="@service.RatingAvg"
+                                   class="flex_column_left card_services">
+                                    @if (Model.ImageServices[0].ServiceId == service.Id)
+                                    {
+                                        // Assuming `imageService` contains the image data as a byte array
+                                        <img src="@Model.ImageServices[0].ImagePath" alt="Service Image" />
+
+                                    }
+                                    <div class="card_services_text">
+                                        <h3>@service.Name</h3>
+                                        <p class="category">category: @service.Category.Name</p>
+                                        <div id="star_@service.Id" class="star">
+                                            <!-- Stars will be dynamically inserted here -->
+                                        </div>
+                                        <p>Price: @service.Price</p>
+                                    </div>
+                                </a>
+                                <script src="~/js/Star.js"></script>
+                                <script>
+                                    // Call setStarRating with the correct rating and unique service ID
+                                    setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);
+                                </script>
+                            }
+
+                        }
+                        else
+                        {
+                            <p>No services available.</p>
+                        }
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>

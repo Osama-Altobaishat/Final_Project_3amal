@@ -1,0 +1,336 @@
+﻿@model (List<Final_Project_3amal.Models.User> Users,List<Final_Project_3amal.Models.Service> Services, List<Final_Project_3amal.Models.Category> Categories, List<Final_Project_3amal.Models.ImageService> ImageServices)
+
+@{
+    ViewData["Title"] = "@User.Identity.Name";
+}
+
+<link rel="stylesheet" href="../CSS/profile.Css" />
+
+<div class="flex_column width_100">
+    <div class="server_info_container">
+        <div class="server_info_left">
+            <div class="top_info">
+                <br />
+
+                <p>Location: @User.FindFirst("Location")?.Value</p>
+                <p>Count services: 10</p>
+                <p>Count rating: 20</p>
+
+                <div class="flex_column_left">
+                    <div class="Reviews_star">
+                        <span>Quality of Service: </span>
+                        <div class="star">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
+                        </div>
+                    </div>
+
+                    <div class="Reviews_star">
+                        <span>Communication: </span>
+                        <div class="star">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
+                        </div>
+                    </div>
+                    <div class="Reviews_star">
+                        <span>On-Time Delivery: </span>
+                        <div class="star">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <p>Order completion rate: 80%</p>
+
+
+                @* test *@
+                <!-- Button to trigger modal -->
+                <button type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                    Open Form Modal
+                </button>
+
+
+            </div>
+            <div class="bottom_info">
+                <br />
+                <div>
+                    <img src="@User.FindFirst("ProfileImage")?.Value" alt="" />
+                    <span>@User.Identity.Name</span>
+                </div>
+            </div>
+        </div>
+        <div class="server_info">
+            <div class="server_info_right">
+                <div class="server_info_text">
+                    <div class="flex_space_between">
+                        <h3 class="orange Suggestions">About me</h3>
+                    </div>
+                    <br />
+                    <p>
+                        @User.FindFirst("About")?.Value
+                    </p>
+                    <br />
+                </div>
+            </div>
+            <div class="server_info_right">
+
+                <div>
+                    <br />
+                    <h3 class="orange Suggestions">My Services:</h3>
+                    <br />
+                    <div class="grid Sugistes_services">
+                        @if (Model.Services != null && Model.Services.Count > 0)
+                        {
+                            @foreach (var service in Model.Services)
+                            {
+                                <a asp-action="Index" asp-controller="ServesInfo"
+                                   asp-route-id="@service.Id"
+                                   asp-route-name="@service.Name"
+                                   asp-route-category="@service.Category.Name"
+                                   asp-route-categoryid="@service.Category.Id"
+                                   asp-route-description="@service.Description"
+                                   asp-route-price="@service.Price"
+                                   asp-route-ratingAvg="@service.RatingAvg"
+                                   asp-route-userid="@service.User.Id"
+                                   class="flex_column_left card_services">
+                                    @if (@Model.ImageServices[0].ServiceId == service.Id)
+                                    {
+
+                                        <img src="@Model.ImageServices[0].ImagePath" alt="Service Image" />
+
+                                    }
+                                    
+                                    <div class="card_services_text">
+                                        <h3>@service.Name</h3>
+                                        <p>Provider: @service.User.FirstName @service.User.LastName</p>
+                                        <p class="category">category: @service.Category.Name</p>
+                                        <div id="star_@service.Id" class="star">
+                                            <!-- Stars will be dynamically inserted here -->
+                                        </div>
+                                        <p>Price: @service.Price</p>
+                                    </div>
+                                </a>
+                                <script src="~/js/Star.js"></script>
+                                <script>
+                                    // Call setStarRating with the correct rating and unique service ID
+                                    setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);
+                                </script>
+                            }
+
+                        }
+                        else
+                        {
+                            <p>No services available.</p>
+                        }
+
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade"
+     id="exampleModal"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <!-- Changed to modal-lg for larger size -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Service</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Image Slider (Carousel) -->
+                <div id="imageCarousel"
+                     class="carousel slide mb-3 position-relative"
+                     data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <!-- Images will be injected here -->
+                    </div>
+
+                    <button class="carousel-control-prev"
+                            style="height: 90%;"
+                            type="button"
+                            data-bs-target="#imageCarousel"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"
+                              aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+
+                    <button class="carousel-control-next"
+                            type="button"
+                            style="height: 90%;"
+                            data-bs-target="#imageCarousel"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon"
+                              aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+
+                <!-- Form Start -->
+                <form id="serviceForm">
+                    <!-- Name input -->
+                    <div class="mb-3">
+                        <label for="serviceName" class="form-label">Name</label>
+                        <input class="input1" type="text" id="serviceName" name="Name" placeholder="Enter name" />
+                    </div>
+
+                    <!-- Image upload -->
+                    <div class="mb-3">
+                        <label for="serviceImage" class="form-label">Image</label>
+                        <input class="input1" type="file" id="serviceImage" name="imageFile" multiple accept="image/*" />
+                    </div>
+
+                    <!-- Price input -->
+                    <div class="mb-3">
+                        <label for="serviceName" class="form-label">Price</label>
+                        <input class="input1" type="number" min="1" step="any" id="servicePrice" name="Price" placeholder="Enter price" />
+                    </div>
+
+                    <!-- Category Select -->
+                    <div class="mb-3">
+                        <label for="serviceCategory" class="form-label">Category</label>
+                        <select class="form-select" id="serviceCategory" name="CategoryId" required>
+                            <option value="" disabled selected>Select a category</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <!-- Description input -->
+                    <div class="mb-3">
+                        <label for="serviceDesc" class="form-label">Description</label>
+                        <textarea class="textarea1" id="serviceDesc" name="Description" rows="3" placeholder="Enter description"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <!-- Add button -->
+                        <input type="submit" id="submitServiceForm" class="btn btn-success">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let selectedFilestest = [];
+
+    document
+        .getElementById("serviceImage")
+        .addEventListener("change", function (event) {
+            const files = event.target.files;
+            if (files && files[0]) {
+                // Log the files for debugging
+                const reader = new FileReader();
+
+                selectedFilestest.push(files[0]);
+                console.log(selectedFilestest);
+
+
+                reader.onload = function (e) {
+                    const carouselInner = document.querySelector(
+                        "#imageCarousel .carousel-inner"
+                    );
+
+                    // Create new carousel item
+                    const newCarouselItem = document.createElement("div");
+                    newCarouselItem.classList.add("carousel-item");
+                    if (carouselInner.children.length === 0) {
+                        newCarouselItem.classList.add("active");
+                    }
+
+                    // Create image element
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.classList.add("d-block", "w-100");
+                    img.alt = "Service Image";
+
+                    // Create delete button
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.classList.add("btn", "btn-danger", "delete-btn");
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.onclick = function () {
+                        deleteImage(newCarouselItem, files[0]);
+                    };
+
+                    // Append the image and delete button to the carousel item
+                    newCarouselItem.appendChild(img);
+                    newCarouselItem.appendChild(deleteBtn);
+
+                    carouselInner.appendChild(newCarouselItem);
+                };
+
+                reader.readAsDataURL(files[0]); // Read the file as a Data URL
+            }
+        });
+
+    // Function to delete an image from the carousel and update the array
+    function deleteImage(carouselItem, file) {
+        const carouselInner = document.querySelector(
+            "#imageCarousel .carousel-inner"
+        );
+        carouselItem.remove();
+
+        // Remove the file from the selectedFilestest array
+        const index = selectedFilestest.indexOf(file);
+        if (index !== -1) {
+            selectedFilestest.splice(index, 1);
+        }
+        console.log(selectedFilestest);
+        // If the deleted item was the active one, make the first remaining item active
+        const items = carouselInner.querySelectorAll(".carousel-item");
+        if (
+            items.length > 0 &&
+            !carouselInner.querySelector(".carousel-item.active")
+        ) {
+            items[0].classList.add("active");
+        }
+    }
+
+    document.getElementById("serviceForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        console.log("Selected Files:", selectedFilestest);
+
+
+        const formData = new FormData();
+        for (let file of selectedFilestest) {
+            formData.append("image", file);
+        }
+        formData.append("Price", document.getElementById("servicePrice").value);
+        formData.append("Name", document.getElementById("serviceName").value);
+        formData.append("Description", document.getElementById("serviceDesc").value);
+        formData.append("CategoryId", document.getElementById("serviceCategory").value);
+
+        console.log(selectedFilestest);
+
+        $.ajax({
+            url: '@Url.Action("CreateService", "Profile")',
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                alert("Images uploaded successfully!");
+                console.log(data);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+
+
+</script>

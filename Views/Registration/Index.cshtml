@@ -1,0 +1,30 @@
+﻿@model Final_Project_3amal.Models.User
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up for user</title>
+    <link rel="stylesheet" href="~/css/Login.Css" />
+</head>
+<body class="signUp_UsersCatygory" style="background-image: url('@Url.Content("~/Images/Login.jpg")');">
+    
+    <div class="container_UsersCatygory">
+
+        <p class="fbt">Select Your Role:</p>
+        <br />
+
+        <div class="UsersCatygory">
+            <a class="fbl" asp-action="ServiceProvider">Service Provider</a>
+            <a class="fbl" asp-action="Users">Users</a>
+        </div>
+        <div class="UsersCatygory">
+            <p class="fbl">don't have an account? <a asp-action="Index" asp-controller="Registration">Login</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

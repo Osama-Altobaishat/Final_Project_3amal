@@ -1,0 +1,302 @@
+﻿@model (List<User> user, List<Category> Categories, ServicesViewModel viewModel, List<ImageService> ImageServices)
+
+@{
+    ViewData["Title"] = ViewBag.Name;
+}
+<style>
+    .pagination-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: Arial, sans-serif;
+        margin-top: 20px;
+    }
+
+        .pagination-container a {
+            padding: 6px 12px;
+            text-decoration: none;
+            color: #ff6600;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .pagination-container a:hover {
+                background-color: #ff6600;
+                color: #fff;
+            }
+
+            .pagination-container a.active {
+                background-color: #ff6600;
+                color: #fff;
+                border-color: #ccc;
+            }
+
+        .pagination-container span {
+            font-weight: bold;
+            color: #555;
+        }
+
+</style>
+<link rel="stylesheet" href="~/css/Services.Css" />
+<i id="fixedButton" class="bi bi-arrow-up-square-fill orange hidden"></i>
+<section class="flex_column width_100">
+    <br />
+    <div class="flex_space_between width_90">
+        <div>
+            <h2 class="orange">Services</h2>
+            <p>We offer a wide range of services</p>
+        </div>
+
+        <div class="filter filter_heading">
+            <button id="filterButton" class="filterButton">
+                <i class="bi bi-filter"></i> Filter
+            </button>
+        </div>
+    </div>
+
+    <br />
+</section>
+<section class="flex_column width_100">
+    <div class="grid_serves width_90">
+        <div id="filter">
+            <div id="menu" class="menu">
+                <div>
+                    <h3>Filter</h3>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search..." />
+
+                    <form>
+                        <div class="search-container">
+                           @*  <input type="text"
+                                   class="search-input"
+                                   placeholder="Search..." /> *@
+                        </div>
+                        <select class="form-select" id="serviceCategory" name="CategoryId" required>
+                            <option value="" disabled selected>Select a category</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+
+                        <p>Price:</p>
+                        <div class="range-slider">
+                            <input type="range"
+                                   min="1"
+                                   max="100"
+                                   value="50"
+                                   class="slider"
+                                   id="myRange" />
+                            <div class="tooltip" id="tooltip">50</div>
+                        </div>
+
+                        <p>Service rating:</p>
+                        <div class="rating">
+                            <div class="rating-item">
+                                <input type="radio" id="star5" name="rating" value="5" />
+                                <label for="star5" title="5 stars">
+                                    <div class="stars">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <span> 5 or more</span>
+                                </label>
+                            </div>
+
+                            <div class="rating-item">
+                                <input type="radio" id="star4" name="rating" value="4" />
+                                <label for="star4" title="4 stars">
+                                    <div class="stars">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <span> 4 or more</span>
+                                </label>
+                            </div>
+
+                            <div class="rating-item">
+                                <input type="radio" id="star3" name="rating" value="3" />
+                                <label for="star3" title="3 stars">
+                                    <div class="stars">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <span> 3 or more</span>
+                                </label>
+                            </div>
+
+                            <div class="rating-item">
+                                <input type="radio" id="star2" name="rating" value="2" />
+                                <label for="star2" title="2 stars">
+                                    <div class="stars">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <span> 2 or more</span>
+                                </label>
+                            </div>
+
+                            <div class="rating-item">
+                                <input type="radio" id="star1" name="rating" value="1" />
+                                <label for="star1" title="1 star">
+                                    <div class="stars">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <span> 1 or more</span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <ul id="results"></ul>
+        <div class="main">
+            @foreach (var service in Model.viewModel.Services)
+            {
+                <a asp-action="Index" asp-controller="ServesInfo"
+                   asp-route-id="@service.Id"
+                   asp-route-name="@service.Name"
+                   asp-route-category="@service.Category.Name"
+                   asp-route-categoryid="@service.Category.Id"
+                   asp-route-description="@service.Description"
+                   asp-route-price="@service.Price"
+                   asp-route-ratingAvg="@service.RatingAvg"
+                   asp-route-userid="@service.User.Id"
+                   class="flex_column_left card_services">
+                    @if (@Model.ImageServices[0].ServiceId == service.Id)
+                    {
+
+                        <img src="@Model.ImageServices[0].ImagePath" alt="Service Image" />
+
+                    }
+
+                    <div class="card_services_text">
+                        <h3>@service.Name</h3>
+                        <p>Provider: @service.User.FirstName @service.User.LastName</p>
+                        <p class="category">category: @service.Category.Name</p>
+                        <div id="star_@service.Id" class="star">
+                            <!-- Stars will be dynamically inserted here -->
+                        </div>
+                        <p>Price: @service.Price</p>
+                    </div>
+                </a>
+                <script src="~/js/Star.js"></script>
+                <script>
+                    // Call setStarRating with the correct rating and unique service ID
+                    setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);
+                </script>
+            }
+        </div>
+
+    </div>
+    <div class="pagination-container">
+        @if (Model.viewModel.HasPreviousPage)
+        {
+            <a asp-action="Index" asp-route-id="@ViewBag.CategoryId" asp-route-pageNumber="@(Model.viewModel.PageNumber - 1)" asp-route-pageSize="@Model.viewModel.PageSize">Previous</a>
+        }
+
+        @{
+            int startPage = Math.Max(1, Model.viewModel.PageNumber - 2);
+            int endPage = Math.Min(Model.viewModel.TotalPages, Model.viewModel.PageNumber + 2);
+
+            // Adjust start and end if near the boundaries to always show 5 pages when possible
+            if (Model.viewModel.TotalPages > 5)
+            {
+                if (endPage - startPage < 4)
+                {
+                    if (startPage == 1)
+                    {
+                        endPage = Math.Min(startPage + 4, Model.viewModel.TotalPages);
+                    }
+                    else if (endPage == Model.viewModel.TotalPages)
+                    {
+                        startPage = Math.Max(1, endPage - 4);
+                    }
+                }
+            }
+        }
+
+        @for (int i = startPage; i <= endPage; i++)
+        {
+            <a asp-action="Index" asp-route-id="@ViewBag.CategoryId" asp-route-pageNumber="@i" asp-route-pageSize="@Model.viewModel.PageSize"
+               class="@(i == Model.viewModel.PageNumber ? "active" : "")">@i</a>
+        }
+
+        <span>Page @Model.viewModel.PageNumber of @Model.viewModel.TotalPages</span>
+
+        @if (Model.viewModel.HasNextPage)
+        {
+            <a asp-action="Index" asp-route-id="@ViewBag.CategoryId" asp-route-pageNumber="@(Model.viewModel.PageNumber + 1)" asp-route-pageSize="@Model.viewModel.PageSize">Next</a>
+        }
+    </div>
+
+
+</section>
+<br />
+<script src="~/js/Slider_price.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const filterButton = document.getElementById("filterButton");
+        if (filterButton) {
+            filterButton.onclick = function () {
+                document.getElementById("filter").className = "modal";
+                document.getElementById("menu").style.display = "flex";
+
+                const filterModal = new bootstrap.Modal(
+                    document.getElementById("filter")
+                );
+                filterModal.show();
+            };
+        } else {
+            console.error("Element with ID 'filterButton' not found");
+        }
+    });
+
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            let query = $(this).val();
+
+            if (query.length > 2) { // Optional: Avoid too many requests
+                $.ajax({
+                    url: "/api/Search/search",
+                    type: "GET",
+                    data: { query: query },
+                    success: function (response) {
+                        $("#results").empty(); // Clear previous results
+
+                        response.forEach(function (item) {
+                            $("#results").append(`<li>${item.name}</li>`);
+                        });
+                    },
+                    error: function () {
+                        $("#results").empty();
+                        $("#results").append("<li>Error fetching results</li>");
+                    }
+                });
+            } else {
+                $("#results").empty(); // Clear results if input is too short
+            }
+        });
+    });
+
+
+</script>

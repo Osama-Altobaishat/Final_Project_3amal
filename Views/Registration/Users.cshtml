@@ -1,0 +1,40 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up for users</title>
+    <link rel="stylesheet" href="~/css/Login.Css" />
+</head>
+<body class="signUp" style="background-image: url('@Url.Content("~/Images/Login.jpg")');">
+    <form asp-action="Users" enctype="multipart/form-data">
+        <h3>Sign Up</h3>
+        <label for="First_name">First name:</label>
+        <input type="text" placeholder="First name" name="FirstName" id="First_name" required />
+
+        <label for="Last_name">Last name:</label>
+        <input type="text" placeholder="Last name" name="LastName" id="Last_name" required />
+
+        <label for="Email">Email:</label>
+        <input type="email" name="Email" placeholder="Email" id="Email" required />
+
+        <label for="mobile_num">mobile Number:</label>
+        <input type="number" name="mobileNamber" placeholder="mobile Number" id="mobile_num" required />
+
+        <label for="password">Password:</label>
+        <input type="password" name="Password" placeholder="Password" id="password" required />
+
+        <label for="Confirmpassword">Confirm password:</label>
+        <input type="password" name="ConfirmPassword" placeholder="Confirm password" id="password" required />
+        <span class="error" style="color:red">@ViewBag.Error</span>
+
+        <button class="button">Sign Up</button>
+
+        <p class="fb">do you have an account? <a asp-action="Index" asp-controller="Login">Log in</a></p>
+    </form>
+</body>
+</html>

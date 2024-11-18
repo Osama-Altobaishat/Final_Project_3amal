@@ -1,0 +1,179 @@
+﻿@model (Final_Project_3amal.Models.User User, List<Final_Project_3amal.Models.ImageService> ImageServices, List<Final_Project_3amal.Models.Review> Reviews, List<Final_Project_3amal.Models.Service> Services, List<Final_Project_3amal.Models.Category> Categories)
+
+@{
+    ViewData["Title"] = @ViewBag.Name;
+}
+<link rel="stylesheet" href="~/css/Serves_info.css" />
+<link rel="stylesheet" href="~/css/Slider.css" />
+
+<div class="flex_column width_100">
+    <div class="server_info_container wedth_90">
+        <div class="server_info_left">
+            <div class="top_info">
+                <br />
+                <h3>info:</h3>
+                <h3>@ViewBag.Name</h3>
+                <p class="category">@ViewBag.CategoryName</p>
+                <div class="star" id="star_@ViewBag.Id">
+                    <
+                </div>
+                <script src="~/js/Star.js"></script>
+                <script>
+                    setStarRating(@Math.Round((ViewBag.RatingAvg ?? 0.0), 1), @ViewBag.Id);
+                </script>
+
+                <p>Price : @ViewBag.Price JD</p>
+            </div>
+            <div class="bottom_info">
+                <br />
+                @if (ViewBag.UserId != null)
+                {
+                    <a class="profile" href="../HTML/Profile.html">
+                        <img src="@Model.User.Imagebath" alt="@ViewBag.FirstName @ViewBag.LastName" />
+                        <span>@ViewBag.FirstName @ViewBag.LastName</span>
+                    </a>
+                }
+
+
+            </div>
+        </div>
+        <div class="server_info">
+            <div class="server_info_right">
+                <div class="card_services_text">
+                    <div class="slideshow-container">
+                        @foreach (var imageService in Model.ImageServices)
+                        {
+
+                            <div class="mySlides fadeSlides">
+                                <img src="@imageService.ImagePath" alt="Service Image"
+                                     class="imgSlides" />
+                            </div>
+                        }
+
+                        <div class="prev" onclick="plusSlides(-1)">❮</div>
+                        <div class="next" onclick="plusSlides(1)">❯</div>
+                    </div>
+                </div>
+
+                <div class="server_info_text">
+                    <div class="flex_space_between">
+                        <h3 class="orange Suggestions">Blacksmiths</h3>
+                        <a class="server_request" 
+                        asp-route-id="@ViewBag.Id" 
+                        asp-route-name="@ViewBag.Name" 
+                        asp-route-category="@ViewBag.CategoryName" 
+                        asp-route-categoryid="@ViewBag.CategoryId"
+                           asp-route-price="@ViewBag.Price"
+                           asp-route-description="@ViewBag.Description"
+                           asp-route-ratingAvg="@ViewBag.RatingAvg"
+                        asp-route-userid="@ViewBag.userId"
+                        asp-action="ServiceRequestUsers"
+                        asp-controller="ServiceRequest">Server request</a> 
+                    </div>
+                    <br />
+                    <p>
+                        @ViewBag.Description
+                    </p>
+                    <br />
+                </div>
+            </div>
+            <div class="server_info_right">
+                <div>
+                    <br />
+                    <h3 class="orange Suggestions">Suggestions :</h3>
+                    <br />
+                    @if(Model.Services.Count != 0 && Model.Services != null)
+                    {
+                        <div class="grid Sugistes_services">
+
+                        @foreach (var service in Model.Services){
+
+                            <a asp-action="Index" asp-controller="ServesInfo"
+                                asp-route-id="@service.Id"
+                                asp-route-name="@service.Name"
+                                asp-route-category="@service.Category.Name"
+                                asp-route-categoryid="@service.Category.Id"
+                                asp-route-description="@service.Description"
+                                asp-route-price="@service.Price"
+                                asp-route-ratingAvg="@service.RatingAvg"
+                                asp-route-userid="@service.User.Id"
+                                class="flex_column_left card_services">
+                                @foreach (var imageService in Model.ImageServices)
+                                {
+                                    if (imageService.ServiceId == service.Id)
+                                    {
+
+                                        <img src="@imageService.ImagePath" alt="Service Image" />
+
+                                    }
+                                }
+                                <div class="card_services_text">
+                                    <h3>@service.Name</h3>
+                                    <p>Provider: @service.User.FirstName @service.User.LastName</p>
+                                    <p class="category">category: @service.Category.Name</p>
+                                    <div id="star_@service.Id" class="star">
+                                        <!-- Stars will be dynamically inserted here -->
+                                    </div>
+                                    <p>Price: @service.Price</p>
+                                </div>
+                            </a>
+                            <script src="~/js/Star.js"></script>
+                            <script>
+                                // Call setStarRating with the correct rating and unique service ID
+                                setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);
+                            </script>
+                        }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No suggestions</p>
+                    }
+                    
+                </div>
+                <br />
+            </div>
+            <div class="server_info_right">
+                <br />
+                <h3 class="orange Suggestions">Customers Reviews:</h3>
+                <br />
+                @if(Model.Reviews.Count != 0 && Model.Reviews != null)
+                {
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <div>
+
+                            <div class="Customers_Reviews">
+                                <img src="@Url.Content(review.User.Imagebath)" alt="@review.User.FirstName" />
+                                <span>@review.User.FirstName @review.User.LastName</span>
+                            </div>
+                            <div class="flex_row_left">
+                                <div class="Reviews_star">
+                                    <span>Rating servise: </span>
+                                    <div id="star_@review.Id" class="star">
+                                        <!-- Stars will be dynamically inserted here -->
+                                    </div>
+                                    <script src="~/js/Star.js"></script>
+                                    <script>
+                                        // Call setStarRating with the correct rating and unique service ID
+                                        setStarRating(@Math.Round(review.RatingCommunicator, 1), @review.Id);
+                                    </script>
+                                </div>
+                            </div>
+                            <p>
+                                @review.Comment
+                            </p>
+                            <br />
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    <p>No Reviews</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Slider.js"></script>

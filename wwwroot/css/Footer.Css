@@ -1,0 +1,114 @@
+footer {
+  font-size: 0.9rem;
+}
+.footer {
+  background-color: var(--background-color-card);
+}
+.footer_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.footer_hight {
+  height: 50vh;
+}
+.logo_footer {
+  width: 75px;
+}
+
+.logo_footer img {
+  width: 75px;
+}
+.footer_text_logo {
+  color: #ff6600;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-bottom: 1rem;
+}
+.footer_text_fallow {
+  color: #ff6600;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.icon_footer {
+  padding: 1rem 1rem 1rem 0rem;
+}
+.icon_footer a {
+  color: #ff6600;
+  font-size: x-large;
+  margin-left: 10px;
+}
+.icon_footer a:hover {
+  color: rgb(255, 102, 0, 0.75);
+  background-color: var(--background-color-white);
+}
+.footer_left {
+  width: 100%;
+  padding: 10px;
+}
+.footer_left p {
+  padding: 0rem 1rem 1rem 0rem;
+  color: var(--text-color);
+}
+.footer_center {
+  width: 50%;
+  padding: 10px;
+}
+.footer_center a {
+  text-decoration: none;
+  color: var(--text-color);
+  padding-bottom: 5px;
+  padding-right: 5px;
+}
+.footer_center a:hover {
+  color: #ff6600;
+  background-color: var(--background-color-card);
+}
+.footer_right {
+  width: 65%;
+  padding: 10px;
+}
+.icon_footer_left div {
+  text-decoration: none;
+  color: var(--text-color);
+  padding-bottom: 5px;
+  padding-right: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.icon_footer_left div i {
+  font-size: x-large;
+  margin-right: 10px;
+}
+.flex_Category {
+  display: grid;
+  grid-template-columns: auto;
+  width: 100%;
+}
+.flex_Category a {
+  width: 100%;
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .footer_flex {
+    flex-direction: column;
+  }
+  .flex_Category {
+    grid-template-columns: auto auto auto;
+  }
+}
+@media (max-width: 767px) {
+  /* Styles for large smartphones */
+  .footer_flex {
+    flex-direction: column;
+  }
+  .flex_Category {
+    grid-template-columns: auto auto;
+  }
+  .footer_center {
+    width: 100%;
+  }
+  .footer_right {
+    width: 100%;
+  }
+}

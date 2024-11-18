@@ -1,0 +1,242 @@
+﻿@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Final_Project_3amal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+          rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Nav.css" />
+    <link rel="stylesheet" href="~/css/Footer.Css" />
+    <link rel="stylesheet" href="~/css/Index.Css" />
+
+
+
+    <style>
+        .modal-backdrop {
+            z-index: 1040; /* Ensure backdrop is below the modal */
+        }
+
+    </style>
+
+</head>
+<body>
+    <i id="fixedButton" class="bi bi-arrow-up-square-fill orange hidden"></i>
+
+    <nav id="navbar">
+        <div class="topnav" id="myTopnav">
+
+            
+                <div class="div_left">
+                    <div>
+                    <a class="logo" asp-controller="Home" asp-action="Index" style="padding: 0px">
+                            <img src="~/Images/logo.png" alt="logo" />
+                        </a>
+                    </div>
+                    <div class="div_center">
+                    <a asp-controller="Home" asp-action="Index">Home</a>
+                        <a href="#home">Category</a>
+                    <a asp-controller="Home" asp-action="About_us">About us</a>
+                        <a href="javascript:void(0);" id="theme-toggle">
+                            <i class="bi bi-moon-fill"></i>
+                        </a>
+                    </div>
+                </div>
+            
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="div_rghit">
+                <div class="dropdown ">
+                        <button class="btn btn-light dropdown-toggle flex-d flex-column justify-content-center align-items-center" type="button" data-bs-toggle="dropdown" style="background-color: var(--background-color-nav); border=none" aria-expanded="false">
+                            @if (User.FindFirst("ProfileImage")?.Value != "No Image")
+                            {
+                                <img src="@User.FindFirst("ProfileImage")?.Value"
+                                     class="rounded-circle"
+                                     height="30"
+                                     alt=""
+                                    loading="lazy" />
+                            }
+                            else
+                            {
+                                <img src="~/Images/Default.jpg"
+                                     class="rounded-circle"
+                                     height="30"
+                                     alt=""
+                                     loading="lazy" />
+                            }
+
+
+
+                    </button>
+                        <ul class="dropdown-menu px-4" style="background-color: var(--background-color-nav); border : 0px;">
+                            <li class="d-inline-flex">
+                            <h6 class="card-subtitle mb-2 fs-6 text-center" style=" color: var(--text-color);">@User.Identity.Name</h6>
+                        </li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                            @if (User.FindFirst(ClaimTypes.Role)?.Value == "User")
+                            {
+                                <li><a asp-action="UserProfile" asp-controller="Profile" class="dropdown-item ">Your profile</a></li>
+
+                            }
+                            else if (User.FindFirst(ClaimTypes.Role)?.Value == "Service_Provider")
+                            {
+                                <li><a asp-action="Index" asp-controller="Profile" class="dropdown-item ">Your profile</a></li>
+                                <li><a asp-action="ServiceRequestList" asp-controller="ServiceRequest" class="dropdown-item ">Servise Page</a></li>
+                            }
+
+                        <li>
+                            <form asp-controller="Login" asp-action="Logout" class="flex-d flex-column align-items-center justify-content-center"  method="post">
+                                    <button type="submit" class="btLogout">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                </div>
+                @* <div class="div_rghit">
+                    <a class="logo" style="padding: 0px">
+                        <img src="@User.FindFirst("ProfileImage")?.Value" alt="Profile Image" />
+                    </a>
+                </div>
+                <form asp-controller="Login" asp-action="Logout" method="post">
+                    <button type="submit" class="dropdown-item text-dark ">Logout</button>
+                </form>  *@
+            }
+            else
+            {
+                <div class="div_rghit">
+                    <a href="#contact"><i class="bi bi-chat-fill"></i></a>
+                <a href="#contact"><i class="bi bi-bell-fill"></i></a>
+                <a href="#news"><i class="bi bi-person-circle"></i></a>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="bi bi-list" style="font-size: x-large"></i>
+                </a>
+            </div>
+            }
+        </div>
+    </nav>
+
+        @RenderBody()
+
+
+<footer>
+    <div class="flex_column width_100 footer">
+        <br />
+
+        <div class="footer_flex width_90">
+            <div class="flex_column_left footer_left">
+                <div class="flex_row_left">
+                    <!-- <div class="logo_footer" style="padding: 0px">
+                      <img src="../image/logo.png" alt="" />
+                    </div> -->
+                    <span class="footer_text_logo">3amaal</span>
+                </div>
+                <p>
+                    Welcome to 3amaal, your trusted platform for finding skilled
+                    workers and service providers. Whether it's home maintenance,
+                    cleaning, or repairs, we've got you covered. Easily connect with
+                    local professionals, ensuring quality work at fair prices.
+                    Discover a range of services and get the help you need quickly and
+                    efficiently with 3amaal!
+                </p>
+            </div>
+            <div class="flex_column_left footer_center">
+                <div class="flex_row_left">
+                    <span class="footer_text_logo">Category</span>
+                </div>
+                <div></div>
+                <div class="flex_Category">
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                </div>
+            </div>
+            <div class="flex_column_left footer_center">
+                <div class="flex_row_left">
+                    <span class="footer_text_logo">Category</span>
+                </div>
+                <div class="flex_Category">
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                    <a href="#Blacksmiths"><span> Blacksmiths </span></a>
+                </div>
+            </div>
+            <div class="flex_column_left footer_right">
+                <div class="flex_row_left">
+                    <span class="footer_text_logo">Contact us</span>
+                </div>
+                <div class="flex_column_left icon_footer_left">
+                    <div>
+                        <i class="bi bi-telephone-fill orange"></i><span>0792961828</span>
+                    </div>
+                    <div>
+                        <i class="bi bi-envelope-fill orange"></i><span>3amaal@gmail.com</span>
+                    </div>
+                    <div class="flex_space_between width_100 icon_footer">
+                        <span class="footer_text_fallow">Follow us: </span>
+                        <a href="https://www.facebook.com" target="_blank">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="https://www.linkedin.com" target="_blank">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        <a href="https://www.instagram.com" target="_blank">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex_row">
+        <p class="orange">Copyright © 2024 3amaal</p>
+    </div>
+</footer>
+<script>
+    document.querySelectorAll(".card_services").forEach((card) => {
+        card.addEventListener("click", () => {
+            card.classList.add("clicked");
+            setTimeout(() => {
+                card.classList.remove("clicked");
+            }, 200);
+        });
+    });
+</script>
+<script src="~/js/Nav.js"></script>
+    <script>
+        // Get the theme toggle button
+        const toggleButton = document.getElementById("theme-toggle");
+
+        // Check if the user has previously selected a theme
+        const currentTheme = localStorage.getItem("theme") || "light";
+
+        // Apply the saved theme on load
+        if (currentTheme === "dark") {
+            document.body.classList.add("dark-theme");
+        }
+
+        // Event listener for theme toggle button
+        toggleButton.addEventListener("click", () => {
+            document.body.classList.toggle("dark-theme");
+
+            // Save the user's theme preference to localStorage
+            const theme = document.body.classList.contains("dark-theme")
+                ? "dark"
+                : "light";
+            localStorage.setItem("theme", theme);
+        });
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+  </body>
+</html>

@@ -1,0 +1,462 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap");
+:root {
+  --background-color: #ffffff;
+  --background-color-card: #f2f2f2;
+  --background-color-white: #ffffff;
+  --background-color-gray: #f1f1f1;
+  --text-color: #000000;
+  --shadow-color: 0 4px 12px rgba(0, 0, 0, 0.1), 0 6px 24px rgba(0, 0, 0, 0.15);
+  --shadow-color-hover: 0 8px 16px rgba(0, 0, 0, 0.2),
+    0 12px 36px rgba(0, 0, 0, 0.25);
+}
+
+.dark-theme {
+  --background-color: #000;
+  --text-color: #f1f1f1;
+  --background-color-card: #121212;
+  --background-color-white: #121212;
+  --background-color-gray: #121212;
+  --shadow-color: 0 4px 12px rgba(255, 255, 255, 0.1),
+    0 6px 24px rgba(255, 255, 255, 0.15);
+  --shadow-color-hover: 0 8px 16px rgba(255, 255, 255, 0.2),
+    0 12px 36px rgba(255, 255, 255, 0.25);
+}
+*,
+*:before,
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  background-color: var(--background-color);
+}
+.flex_row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex_column {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.flex_space_between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.width_100 {
+  width: 100%;
+}
+.width_90 {
+  width: 90%;
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Styles for tablets */
+  form {
+    width: 70%;
+  }
+}
+@media (max-width: 767px) {
+  /* Styles for large smartphones */
+  .width_90 {
+    width: 100%;
+  }
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+textarea:focus {
+  border-color: #ff8c00; /* Orange color on focus */
+  box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+.card_category {
+  background-image: url("../image/category/Blacksmiths.jpg");
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+.card_category a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-color);
+
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+.card_category a:hover {
+  background-color: rgba(0, 0, 0, 0);
+}
+.card_category:hover {
+  transform: scale(1.05);
+}
+
+.card_category_Services {
+  background-color: rgb(255, 102, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  box-shadow: 3px 3px 10px 3px rgb(0 0 0 / 40%);
+  padding: 16px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--background-color);
+
+  text-align: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+    .card_category_Services:hover {
+        background-color: rgb(255, 102, 0, 0.75);
+        color: var(--text-color);
+    }
+.contener_category_Services {
+  background-color: var(--background-color-gray);
+}
+.grid_category_Services {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+  padding: 2rem 0rem;
+}
+.orange {
+  color: #ff6600;
+}
+pre {
+  color: #ff6600;
+  font-size: 24px; /* You can adjust the size as needed */
+  font-weight: bold; /* Make the text bold */
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Styles for tablets */
+  .grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .grid_category_Services {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .Sugistes_services {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 767px) {
+  /* Styles for large smartphones */
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    padding: 0px 10px;
+  }
+  .grid_category_Services {
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem 10px;
+  }
+  pre {
+    padding: 10px;
+  }
+}
+.card_services {
+  width: 100%;
+  color: #ff6600;
+  background-color: var(
+    --background-color-card
+  ); /* White background for a clean look */
+  box-shadow: var(--shadow-color); /* Softer shadow */
+  border-radius: 8px; /* More rounded corners */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration:none;
+}
+
+.card_services:hover {
+  transform: scale(1.05); /* Slight scale on hover */
+  box-shadow: var(--shadow-color-hover); /* Deeper shadow on hover */
+  text-decoration: none;
+  color: #ff6600;
+}
+
+.card_services img {
+  width: 100%;
+  border-radius: 8px 8px 0 0; /* Adjusted for more rounded corners */
+  transition: opacity 0.3s ease;
+}
+.card_services p {
+  color: var(--text-color);
+}
+.card_services:hover img {
+  opacity: 0.9; /* Slight fade effect on image hover */
+}
+
+.card_services .card_services_text {
+  padding: 15px; /* Increase padding for better readability */
+  text-align: left;
+}
+
+.card_services .card_services_text *:not(.star) {
+  padding: 4px 0; /* Adjust padding for better spacing */
+}
+
+.card_services .category {
+  color: #9c9c9c;
+  font-size: 0.9rem; /* Consistent font size */
+}
+
+.star {
+  padding: 0;
+  color: #ff6600; /* Star color remains the same */
+}
+
+.flex_column_left {
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.flex_row_left {
+  display: flex;
+  align-items: center;
+}
+
+.card_services:hover {
+  /* transform: scale(1.05); */
+  transform: translate(0px, -5px);
+}
+.Show_all_Category {
+  text-decoration: none;
+}
+.Show_all_Category pre:hover {
+  color: rgba(255, 102, 0, 0.8);
+  background-color: var(--background-color);
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+/*  background-image: url("../image/first.jpg");*/
+  background-size: cover; /* Ensures the image covers the entire container */
+  background-position: center; /* Centers the background image */
+  width: 100%;
+  height: 70vh; /* Set a height for the container */
+  border-radius: 0px 0px 20px 20px;
+}
+.header div {
+  height: 90%;
+}
+.header_text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  color: var(--background-color);
+  font-weight: bold;
+  margin-bottom: 1rem;
+  width: 50%;
+}
+.header_text .div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+}
+.header_text h2 {
+  font-size: 3rem;
+  margin-bottom: 50px;
+  margin-top: 100px;
+}
+.header_text p {
+  font-size: 1.5rem;
+  margin-bottom: 50px;
+}
+.header_button {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 92%;
+}
+#map {
+  height: 200px;
+  width: 100%;
+  margin-top: 10px;
+}
+.service-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  padding: 20px 5%;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-color-card);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 20px;
+  width: 210px;
+  height: 160px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-color-hover);
+  background-color: var(--background-color-card);
+}
+
+.icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.service-cards h3 {
+  font-size: 16px;
+  color: var(--text-color);
+}
+.content_info {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+}
+.content_info div {
+  display: block;
+  padding: 0px 20px;
+}
+.content_info p {
+  font-size: x-large;
+  color: var(--text-color);
+}
+.content_info h2 {
+  font-size: xx-large;
+  color: #ff6600;
+  margin-bottom: 5px;
+}
+.profile img {
+  width: 50px;
+  border-radius: 100%;
+  margin: 20px 0px;
+}
+.profile p {
+  padding-left: 10px;
+}
+.contener_category_Profile {
+  background-color: var(--background-color-gray);
+}
+.profile_concenter {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.profile_home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var( --background-color-white ); /* White background for each profile card */
+    box-shadow: var(--shadow-color); /* Light shadow for depth */
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    width: 15rem;
+    text-decoration:none;
+}
+
+.profile_home:hover {
+  box-shadow: 0 6px 12px rgb(255, 102, 0, 0.5); /* Stronger shadow on hover */
+}
+
+.profile_home img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 15px 0;
+  object-fit: cover;
+  border: 3px solid #ff6600; /* Subtle border around image */
+}
+
+.profile_home p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  text-align: center;
+  margin-top: 10px;
+}
+.delete-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 80px;
+    z-index: 1;
+}
+
+.input1,
+.textarea1 {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+    .input1:focus,
+    .textarea1:focus {
+        border-color: #ff8c00; /* Orange color on focus */
+        box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
+    }

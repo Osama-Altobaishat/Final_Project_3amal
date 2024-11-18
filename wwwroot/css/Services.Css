@@ -1,0 +1,259 @@
+.grid_serves {
+  display: grid;
+  grid-template-areas: "menu main main main"; /* Layout: menu on the left and main takes the rest */
+  gap: 10px;
+  grid-template-columns: 2fr 7fr; /* Menu takes 2 fractions, main takes 3 */
+  margin: 10px 0px;
+}
+
+.menu {
+  grid-area: menu;
+  width: 100%; /* Ensures full width inside the grid cell */
+  display: grid;
+  grid-template-columns: repeat(
+    1,
+    2fr
+  ); /* Divides menu into two equal columns */
+}
+.menu * {
+  margin-bottom: 5px;
+}
+.main {
+  grid-area: main;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(
+    3,
+    1fr
+  ); /* Three equal columns for main content */
+  grid-template-rows: repeat(2, 1fr);
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.search-input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.search-input:focus {
+  border-color: #ff8c00; /* Orange color on focus */
+  box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
+}
+
+.search-button {
+  background-color: #ff8c00; /* Orange color */
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 50%;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #ff6600; /* Darker shade on hover */
+}
+.range-slider {
+  position: relative; /* Make position relative for tooltip positioning */
+  width: 100%; /* Adjust width as needed */
+}
+
+.slider {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none; /* Remove default styling */
+  width: 100%; /* Full-width */
+  height: 15px; /* Height of the slider */
+  background: linear-gradient(
+    to right,
+    orange 0%,
+    orange 50%,
+    #ddd 50%,
+    #ddd 100%
+  ); /* Gradient background */
+  border-radius: 5px; /* Rounded corners */
+  outline: none; /* Remove outline */
+  transition: background 0.3s ease; /* Smooth transition */
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none; /* Remove default styling */
+  width: 25px; /* Width of the thumb */
+  height: 25px; /* Height of the thumb */
+  border-radius: 50%; /* Rounded thumb */
+  background: #ff6600; /* Orange color for the thumb */
+  cursor: pointer; /* Pointer on hover */
+  position: relative; /* Position relative for tooltip */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Width of the thumb */
+  height: 25px; /* Height of the thumb */
+  border-radius: 50%; /* Rounded thumb */
+  background: #ff6600; /* Orange color for the thumb */
+  cursor: pointer; /* Pointer on hover */
+  position: relative; /* Position relative for tooltip */
+}
+
+.slider::-ms-thumb {
+  width: 25px; /* Width of the thumb */
+  height: 25px; /* Height of the thumb */
+  border-radius: 50%; /* Rounded thumb */
+  background: #ff6600; /* Orange color for the thumb */
+  cursor: pointer; /* Pointer on hover */
+  position: relative; /* Position relative for tooltip */
+}
+
+/* Tooltip styling */
+.tooltip {
+  position: absolute; /* Position absolute for tooltip */
+  background-color: #333; /* Dark background for tooltip */
+  color: #fff; /* White text color */
+  padding: 5px 10px; /* Padding */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 14px; /* Font size */
+  display: none; /* Initially hidden */
+  transform: translate(-50%, -150%); /* Center above thumb */
+  white-space: nowrap; /* Prevent line breaks */
+  z-index: 1000;
+  opacity: 1;
+}
+.rating {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.rating-item {
+  display: flex;
+  align-items: center;
+}
+
+label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  transition: transform 0.2s ease;
+}
+
+label:hover {
+  transform: scale(1.02); /* Slightly enlarge on hover */
+}
+
+.stars {
+  display: flex;
+  margin-right: 5px;
+  font-size: medium; /* Adjust size of stars */
+  color: #ff6600; /* Gold color for stars */
+}
+
+input[type="radio"]:checked + label .stars i {
+  color: #ff6600; /* Gold color for selected stars */
+}
+
+input[type="radio"]:checked + label {
+  animation: pulse 0.5s; /* Animation when selected */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+span {
+  font-size: large; /* Adjust size of text */
+  color: #333; /* Text color */
+}
+.filter button {
+  display: flex;
+  align-items: center;
+  color: white;
+  color: #ffffff;
+  background-color: #ff6600;
+  border-radius: 5px;
+  padding: 8px 16px;
+  border: 0px;
+  font-size: larger;
+}
+.filter button i {
+  margin-right: 5px;
+}
+.filter_heading {
+  display: none;
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .filter_heading {
+    display: block;
+  }
+  .flex_space_between {
+    padding: 10px;
+  }
+
+  .grid_serves {
+    display: grid;
+    grid-template-areas: "main main"; /* Layout: menu on the left and main takes the rest */
+    padding: 10px;
+  }
+
+  .menu {
+    display: none;
+    background-color: white;
+    width: 70%;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+  }
+  .main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 767px) {
+  .filter_heading {
+    display: block;
+  }
+  .flex_space_between {
+    padding: 10px;
+  }
+
+  .grid_serves {
+    display: grid;
+    grid-template-areas: "main main"; /* Layout: menu on the left and main takes the rest */
+    padding: 10px;
+  }
+
+  .menu {
+    display: none;
+    background-color: white;
+    width: 70%;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+  }
+  .main {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+p,h3,span {
+    color: var(--text-color);
+}

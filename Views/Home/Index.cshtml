@@ -1,0 +1,106 @@
+﻿@model (List<Final_Project_3amal.Models.Service> Services, List<Final_Project_3amal.Models.User> users, List<Final_Project_3amal.Models.Category> categories, List<Final_Project_3amal.Models.ImageService> ImageServices)
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="flex_column width_100">
+    <div class="header" style="background-image: url('@Url.Content("~/images/first.jpg")');">
+        <div class="header_div width_90">
+            <div class="header_text">
+                <div class="div" >
+
+                    <h2>Welcome to 3amal</h2>
+                    <p>
+                        your trusted platform for finding skilled workers and service
+                        providers. Whether it's home maintenance, cleaning, or repairs,
+                        we've got you covered.
+                    </p>
+                    <div class="header_button">
+                        <a class="card_category_Services" href="">Show categories</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="flex_column width_100 contener_category">
+    <br />
+    <br />
+
+    <h2 class="orange">Choose the category for you</h2>
+    <br />
+    <div class="service-cards">
+    @foreach (var category in Model.categories)
+    {
+            <a asp-controller="Category" asp-action="Index" asp-route-id="@category.Id" asp-route-name="@category.Name" class="service-card">
+                <div class="icon">@category.Icon</div>
+                <h3>@category.Name</h3>
+            </a>
+    }
+    </div>
+    <br />
+    <br />
+</section>
+<section class="flex_column width_100 contener_category_Profile">
+    <br />
+    <h2 class="orange">Some service providers</h2>
+    <br />
+    <div class="profile_concenter">
+        @foreach (var User in Model.users)
+        {
+            <a asp-action="Index" asp-controller="Users" asp-route-id="@User.Id" class="profile_home">
+                <img src="@User.Imagebath" alt="@User.FirstName @User.LastName" />
+                <p class="card-title">@User.FirstName @User.LastName</p>
+            </a>
+        }
+    </div>
+    <br />
+</section>
+<section class="flex_column width_100">
+    <br />
+    <div class="flex_row width_90">
+        <h2 class="orange">Sugistes services</h2>
+    </div>
+    <br />
+    <div class="grid width_90 Sugistes_services">
+        @foreach (var service in Model.Services)
+        {
+            <a asp-action="Index" asp-controller="ServesInfo"
+               asp-route-id="@service.Id"
+               asp-route-name="@service.Name"
+               asp-route-category="@service.Category.Name"
+               asp-route-categoryid="@service.Category.Id"
+               asp-route-description="@service.Description"
+               asp-route-price="@service.Price"
+               asp-route-ratingAvg="@service.RatingAvg"
+               class="flex_column_left card_services">
+                @foreach (var imageService in Model.ImageServices)
+                {
+                    if (imageService.ServiceId == service.Id)
+                    {
+                        // Assuming `imageService` contains the image data as a byte array
+                        <img src="@imageService.ImagePath" alt="Service Image" />
+
+                    }
+                }
+                <div class="card_services_text">
+                    <h3>@service.Name</h3>
+                    <p class="category">category: @service.Category.Name</p>
+                    <div id="star_@service.Id" class="star">
+                        <!-- Stars will be dynamically inserted here -->
+                    </div>
+                    <p>Price: @service.Price</p>
+                </div>
+            </a>
+            <script src="~/js/Star.js"></script>
+            <script>
+                // Call setStarRating with the correct rating and unique service ID
+                setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);
+            </script>
+        }
+       
+    </div>
+    <br />
+</section>

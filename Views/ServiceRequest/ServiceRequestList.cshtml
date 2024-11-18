@@ -1,0 +1,66 @@
+﻿@model (List<Final_Project_3amal.Models.ServiceRequest> serviceRequests,List<Final_Project_3amal.Models.Service> services , List<Final_Project_3amal.Models.User> users)
+
+<link rel="stylesheet" href="~/css/Serves_info.css" />
+
+<div class="flex_column width_100">
+    <div class="server_info_container">
+        <div class="server_info">
+            <div class="server_info_right">
+                <div class="card_services_text">
+                    <h3 class="orange Suggestions">Service Requests:</h3>
+                </div>
+                @foreach (var serviceRequest in Model.serviceRequests)
+                {
+                    <div class="job_details">
+                        <div>
+                            <h3 class="Suggestions">@serviceRequest.Title</h3>
+
+                            <p>
+                                @serviceRequest.Description
+                            </p>
+                            <div class="flex_row">
+                                <p>
+                                    <i class="bi bi-geo-alt icon"></i>
+                                    Location: @serviceRequest.Location
+                                </p>
+                                <p>
+                                    <i class="bi bi-clock icon"></i>
+                                    Price: @serviceRequest.Price JD
+                                </p>
+                                <p>
+                                    <i class="bi bi-clock icon"></i>
+                                    Send: @serviceRequest.SendDate
+                                </p>
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <a asp-action="ServiceRequestShow" asp-route-id="@serviceRequest.Id">
+                                Show Details
+                            </a>
+                            @if (serviceRequest.Status == Status.Pending)
+                            {
+                                <p style="color:orange">@serviceRequest.Status</p>
+                            }
+                            else if(serviceRequest.Status == Status.Accepted)
+                            {
+                                <p style="color:green">@serviceRequest.Status</p>
+                            }
+                            else if(serviceRequest.Status == Status.Rejected)
+                            {
+                                <p style="color:red">@serviceRequest.Status</p>
+                            }
+                            else if(serviceRequest.Status == Status.Completed)
+                            {
+                                <p style="color:blue">@serviceRequest.Status</p>
+                            }
+
+                        </div>
+                        <br />
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

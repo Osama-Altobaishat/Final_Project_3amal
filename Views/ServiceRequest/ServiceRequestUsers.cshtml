@@ -1,0 +1,280 @@
+﻿@model (Final_Project_3amal.Models.Service Services,Final_Project_3amal.Models.User Users,string category)
+<link rel="stylesheet" href="~/css/Slider.css" />
+<link rel="stylesheet" href="~/css/Serves_info.css" />
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcG6ZRPG7IxaFAFbDDj62lhVnBkNtPWJ0&callback=initMap"
+        async
+        defer></script>
+<div class="flex_column width_100">
+    <div class="server_info_container">
+        <div class="server_info">
+            <div class="server_info_right">
+                <div class="card_services_text">
+                    <h3 class="orange Suggestions">Service details:</h3>
+                </div>
+
+                <div class="job_details">
+                    <div>
+                        <h3 class="Suggestions">@Model.Services.Name</h3>
+
+                        <p>
+                            @Model.Services.Description
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <i class="bi bi-person icon"></i>
+                            Provider: @Model.Users.FirstName @Model.Users.LastName
+                        </p>
+                        <p>
+                            <i class="bi bi-hammer icon"></i>
+                            Category: @Model.category
+                        </p>
+                        <p>
+                            <i class="bi bi-cash icon"></i>
+                            Price: @Model.Services.Price JD
+                        </p>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="server_info_right">
+                <div>
+                    <br />
+                    <h3 class="orange Suggestions">Service Request</h3>
+                    <div class="modal-body">
+                        <!-- Form Start -->
+                        <form id="serviceForm">
+                            <!-- Title input -->
+                            <div class="mb-3">
+                                <label for="serviceName" class="form-label">Title</label>
+                                <input type="text"
+                                       id="serviceName"
+                                       placeholder="Enter title" />
+                            </div>
+                            <!-- Description input -->
+                            <div class="mb-3">
+                                <label for="serviceDesc" class="form-label">Description</label>
+                                <textarea id="serviceDesc"
+                                          rows="3"
+                                          placeholder="Enter description"></textarea>
+                            </div>
+
+                            <!-- Category input -->
+                            <div class="flex_row_left w-100">
+                                <div class="w-25">
+                                    <label for="serviceDate" class="form-label">Date</label>
+                                    <input type="date" id="serviceDate" />
+                                </div>
+
+                                <div class="w-25">
+                                    <label for="serviceTime" class="form-label">Time</label>
+                                    <input type="time" id="serviceTime" />
+                                </div>
+                            </div>
+                            <div class="mb-3 w-50">
+                                <label for="serviceNumber" class="form-label">Price</label>
+                                <input type="number"
+                                       id="serviceNumber"
+                                       placeholder="Enter Price"
+                                       min="1" />
+                            </div>
+
+                            <div id="locationPopup" class="mb-3">
+                                <div class="popup-content">
+                                    <label for="serviceDate" class="form-label">Location</label>
+                                    <div class="flex_row_left">
+                                        <input id="searchLocation"
+                                               type="text"
+                                               placeholder="Search for a location..." />
+                                        <button class="server_request"
+                                                type="button"
+                                                onclick="geocodeAddress()">
+                                            Search
+                                        </button>
+                                    </div>
+
+                                    <div id="map"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <!-- Add button -->
+                                <input type="submit" id="submitBtn" class="server_request" placeholder="Server request">
+                            </div>
+                        </form>
+                    </div>
+                    
+
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Get current date and time
+    const now = new Date();
+
+    // Format date to YYYY-MM-DD
+    const today = now.toISOString().split("T")[0];
+    document.getElementById("serviceDate").value = today;
+    document.getElementById("serviceDate").min = today;
+
+    // Format time to HH:MM
+    const currentTime = now.toTimeString().split(":");
+    const time = `${currentTime[0]}:${currentTime[1]}`; // HH:MM
+    document.getElementById("serviceTime").value = time;
+</script>
+<script>
+    // Google Maps Code
+    let map;
+    let marker1;
+    let geocoder;
+    let markerLocation;
+    let locationName;
+    let locationDetails;
+
+    function initMap() {
+        const initialLocation = { lat: 31.963158, lng: 35.930359 }; // Amman/Jordan
+        geocoder = new google.maps.Geocoder();
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 10,
+            center: initialLocation,
+        });
+
+        map.addListener("click", (event) => {
+            const clickedLocation = event.latLng;
+
+            if (marker1) {
+                marker1.setPosition(clickedLocation);
+            } else {
+                marker1 = new google.maps.Marker({
+                    position: clickedLocation,
+                    map: map,
+                    draggable: true,
+                });
+            }
+
+            markerLocation = {
+                lat: clickedLocation.lat(),
+                lng: clickedLocation.lng(),
+            };
+            console.log(markerLocation);
+            // Reverse Geocode the clicked location
+            geocoder.geocode({ location: markerLocation }, (results, status) => {
+                if (status === "OK") {
+                    if (results[0]) {
+                        locationName = results[0].address_components;
+                        fullAddress = results[0].formatted_address;
+                        let city = "";
+                        let country = "";
+
+                        locationName.forEach((component) => {
+                            if (component.types.includes("locality")) {
+                                city = component.long_name;
+                            }
+                            if (component.types.includes("country")) {
+                                country = component.long_name;
+                            }
+                        });
+
+                        locationDetails = {
+                            city: city,
+                            country: country,
+                        };
+                        console.log(locationDetails);
+                        console.log(markerLocation);
+
+
+                    } else {
+                        console.log("No results found");
+                    }
+                } else {
+                    console.log("Geocoder failed due to: " + status);
+                }
+            });
+        });
+    }
+
+    function geocodeAddress() {
+        const address = document.getElementById("searchLocation").value;
+        console.log(address);
+        geocoder.geocode({ address: address }, (results, status) => {
+            if (status === "OK") {
+                console.log(results);
+                map.setCenter(results[0].geometry.location);
+                if (marker1) {
+                    marker1.setPosition(results[0].geometry.location);
+                } else {
+                    marker1 = new google.maps.Marker({
+                        position: results[0].geometry.location,
+                        map: map,
+                    });
+                }
+
+                map.setZoom(15);
+                markerLocation = {
+                    lat: results[0].geometry.location.lat(),
+                    lng: results[0].geometry.location.lng(),
+                };
+
+                locationName = results[0].address_components;
+                let city = "";
+                let country = "";
+
+                locationName.forEach((component) => {
+                    if (component.types.includes("locality")) {
+                        city = component.long_name;
+                    }
+                    if (component.types.includes("country")) {
+                        country = component.long_name;
+                    }
+                });
+
+                locationDetails = {
+                    city: city,
+                    country: country,
+                };
+                console.log(locationDetails);
+                console.log(markerLocation);
+
+            } else {
+                alert(
+                    "Geocode was not successful for the following reason: " + status
+                );
+            }
+        });
+    }
+
+    document.getElementById("serviceForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+            //console.log('test');
+            //console.log(markerLocation, locationDetails, $('#serviceName').val(), $('#serviceDesc').val(), $('#serviceDate').val() + $('#serviceTime').val(), $('#serviceNumber').val() ,@Model.Services.Id);
+            // Collect form data
+            var formData = {
+                serviceId: @Model.Services.Id,
+                locationNames: locationDetails.city + "/" + locationDetails.country,
+                lat: markerLocation.lat,
+                lng: markerLocation.lng,
+                serviceName: $('#serviceName').val(),
+                serviceDesc: $('#serviceDesc').val(),
+                serviceDate: $('#serviceDate').val() +" "+ $('#serviceTime').val(),
+                serviceNumber: $('#serviceNumber').val(),
+            };
+            console.log(formData);
+
+            // Perform AJAX request
+            $.ajax({
+                url: '/ServiceRequest/ServiceRequest',  // Replace with your controller URL
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    alert('Data submitted successfully!');
+                    // You can perform other actions here, like clearing the form or updating the UI
+                },
+                error: function (xhr, status, error) {
+                    alert('There was an error: ' + error);
+                }
+            });
+        });
+</script>
