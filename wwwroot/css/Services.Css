@@ -181,7 +181,6 @@ input[type="radio"]:checked + label {
 
 span {
   font-size: large; /* Adjust size of text */
-  color: #333; /* Text color */
 }
 .filter button {
   display: flex;
@@ -253,7 +252,4 @@ span {
   .main {
     grid-template-columns: repeat(1, 1fr);
   }
-}
-p,h3,span {
-    color: var(--text-color);
 }

@@ -65,41 +65,58 @@
     </div>
     <br />
     <div class="grid width_90 Sugistes_services">
-        @foreach (var service in Model.Services)
+        @if (Model.Services != null && Model.Services.Count > 0)
         {
-            <a asp-action="Index" asp-controller="ServesInfo"
-               asp-route-id="@service.Id"
-               asp-route-name="@service.Name"
-               asp-route-category="@service.Category.Name"
-               asp-route-categoryid="@service.Category.Id"
-               asp-route-description="@service.Description"
-               asp-route-price="@service.Price"
-               asp-route-ratingAvg="@service.RatingAvg"
-               class="flex_column_left card_services">
-                @foreach (var imageService in Model.ImageServices)
-                {
-                    if (imageService.ServiceId == service.Id)
-                    {
-                        // Assuming `imageService` contains the image data as a byte array
-                        <img src="@imageService.ImagePath" alt="Service Image" />
-
-                    }
-                }
-                <div class="card_services_text">
-                    <h3>@service.Name</h3>
-                    <p class="category">category: @service.Category.Name</p>
-                    <div id="star_@service.Id" class="star">
-                        <!-- Stars will be dynamically inserted here -->
-                    </div>
-                    <p>Price: @service.Price</p>
-                </div>
-            </a>
             <script src="~/js/Star.js"></script>
-            <script>
-                // Call setStarRating with the correct rating and unique service ID
-                setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);
-            </script>
+
+            @foreach (var service in Model.Services)
+            {
+                <div>
+                    @{
+                        var _ImageService = Model.ImageServices.Where(x => x.ServiceId == service.Id).Select(x => x.ImagePath).ToList();
+                    }
+                    <a asp-action="Index" asp-controller="ServesInfo"
+                       asp-route-id="@service.Id"
+                       asp-route-name="@service.Name"
+                       asp-route-category="@service.Category.Name"
+                       asp-route-categoryid="@service.Category.Id"
+                       asp-route-description="@service.Description"
+                       asp-route-price="@service.Price"
+                       asp-route-ratingAvg="@service.RatingAvg"
+                       asp-route-userid="@service.User.Id"
+                       class="flex_column_left card_services">
+
+
+
+                        @if (_ImageService != null && _ImageService.Count > 0)
+                        {
+                            <img src="@_ImageService[0]" alt="Service Image" />
+                        }
+
+                        <div class="card_services_text">
+                            <h3 class="orange">@service.Name</h3>
+                            <p>Provider: @service.User.FirstName @service.User.LastName</p>
+                            <p class="category">Category: @service.Category.Name</p>
+                            <div id="star_@service.Id" class="star">
+                                <!-- Stars will be dynamically inserted here -->
+                            </div>
+                            <p>Price: @service.Price</p>
+                        </div>
+
+
+                    </a>
+
+
+                </div>
+
+                <script>
+                    // Call setStarRating with the correct rating and unique service ID
+                    setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);
+                </script>
+            }
+
         }
+
        
     </div>
     <br />

@@ -1,4 +1,5 @@
 using Final_Project_3amal.Data;
+using Final_Project_3amal.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Login/Index";
         options.LogoutPath = "/Logout/Index";
     });
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

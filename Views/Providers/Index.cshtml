@@ -1,0 +1,160 @@
+﻿@model (List<Final_Project_3amal.Models.User> Users,int TotalPages, int PageNumber, int PageSize)
+<link rel="stylesheet" href="~/css/Serves_info.css" />
+<style>
+    .pagination-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .pagination-container a {
+        padding: 6px 12px;
+        text-decoration: none;
+        color: #ff6600;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .pagination-container a:hover {
+            background-color: #ff6600;
+            color: #fff;
+        }
+
+        .pagination-container a.active {
+            background-color: #ff6600;
+            color: #fff;
+            border-color: #ccc;
+        }
+
+    .pagination-container span {
+        font-weight: bold;
+        color: #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+    }
+    /* General form styling */
+    .form {
+        display: flex;
+        align-items: center;
+        gap: 0px;
+    }
+
+    /* Input field styling */
+    .orange-input {
+        padding: 9px;
+        border: 1px solid #FF6600cc; /* Orange border */
+        outline: none;
+        width: 100%;
+        font-size: 14px;
+        color: #333; /* Darker text */
+        background-color: #fff;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        border-radius: 10px 0px 0px 10px;
+    }
+
+        .orange-input:focus {
+            border-color: #FF6600; /* Darker orange */
+            box-shadow: 0 0 5px rgba(255, 165, 0, 0.6);
+        }
+
+    /* Button styling */
+    .orange-btn {
+        padding: 10px 20px;
+        background-color: #FF6600; /* Orange background */
+        color: #fff; /* White text */
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s, transform 0.2s;
+        border-radius: 0px 10px 10px 0px;
+    }
+
+        .orange-btn:hover {
+            background-color: #FF6600cc; /* Darker orange on hover */
+            transform: scale(1.05);
+        }
+
+        .orange-btn:active {
+            transform: scale(0.95);
+        }
+
+</style>
+<div class="flex_column width_100">
+    <div class="d-flex flex-column server_info_container wedth_90" style="margin: 20px 0px">
+
+        <div class="server_info_right">
+
+            <form class="form" asp-controller="Providers" asp-action="Index" method="get">
+                <input class="search orange-input" type="Search" name="Search" aria-label="Search" placeholder="Search by Name" />
+                <button class="searchbtn orange-btn" type="submit">Search</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="flex_column width_100">
+    <div class="d-flex flex-column server_info_container wedth_90" style="margin: 20px 0px">
+        @foreach (var user in Model.Users)
+        {
+            <div class="server_info_right">
+                <a asp-action="Index" class="profileProviders" asp-controller="Users" asp-route-id="@user.Id">
+                    <img src="@user.Imagebath" alt="@user.FirstName @user.LastName" />
+
+                    <div>
+                        <p class="card-title">@user.FirstName @user.LastName</p>
+                        <p class="about">@user.AboutUs</p>
+                    </div>
+
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="pagination-container">
+            @if (Model.PageNumber > 1)
+            {
+                <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-pageSize="@Model.PageSize">Previous</a>
+            }
+
+            @{
+                int startPage = Math.Max(1, Model.PageNumber - 2);
+                int endPage = Math.Min(Model.TotalPages, Model.PageNumber + 2);
+
+                // Adjust start and end if near the boundaries to always show 5 pages when possible
+                if (Model.TotalPages > 5)
+                {
+                    if (endPage - startPage < 4)
+                    {
+                        if (startPage == 1)
+                        {
+                            endPage = Math.Min(startPage + 4, Model.TotalPages);
+                        }
+                        else if (endPage == Model.TotalPages)
+                        {
+                            startPage = Math.Max(1, endPage - 4);
+                        }
+                    }
+                }
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <a asp-action="Index" asp-route-pageNumber="@i" class="@(i == Model.PageNumber ? "active" : "")" asp-route-pageSize="@Model.PageSize">@i</a>
+
+            }
+
+            <span>Page @Model.PageNumber of @Model.TotalPages</span>
+
+            @if (Model.PageNumber < Model.TotalPages)
+            {
+
+                <a asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-pageSize="@Model.PageSize">Next</a>
+
+            }
+    </div>
+
+</div>

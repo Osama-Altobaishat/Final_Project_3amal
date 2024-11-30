@@ -6,7 +6,7 @@ namespace Final_Project_3amal.Models
     {
         Pending,
         Accepted,
-        Active,
+        Cancelled,
         Rejected,
         Completed
     }
@@ -39,9 +39,13 @@ namespace Final_Project_3amal.Models
         public decimal lng { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "Price must be a positive number.")]
-        public decimal Price { get; set; } 
+        public decimal Price { get; set; }
 
+        [Required]
         public Status Status { get; set; }
+
+        [Required]
+        public bool IsReviewed { get; set; } = false;
 
         [DataType(DataType.DateTime)] 
         [Required]

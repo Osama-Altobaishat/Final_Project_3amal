@@ -4,11 +4,27 @@
     ViewData["Title"] = "Users";
     Layout = "_LayoutDashboard";
 }
-
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Users Managmant </h1>
+            <p>Welcome to your admin dashboard!</p>
+        </div>
+    </div>
+</div>
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <div class="content-header">
+            <form asp-controller="Dashboard" asp-action="Users" method="get">
+                <input class="search" type="Search" name="Search" aria-label="Search" placeholder="Search by (Id,Name)" />
+                <button class="searchbtn" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="dashboard-content">
     <div class="container-fluid">
         <div class="content-table">
-            <h2>Manage Users</h2>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -22,29 +38,10 @@
                             @Html.DisplayNameFor(model => model.Email)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Role)
-                        </th>
-                        <th>
                             @Html.DisplayNameFor(model => model.Phone)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.BirthDate)
-                        </th>
-                        
-                        <th>
-                            @Html.DisplayNameFor(model => model.AboutUs)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Active)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Location)
-                        </th>
-                        <th>
                             @Html.DisplayNameFor(model => model.CreatedAt)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Imagebath)
                         </th>
                     </tr>
                 </thead>
@@ -62,36 +59,10 @@
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Role)
-                            </td>
-                            <td>
                                 @Html.DisplayFor(modelItem => item.Phone)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.BirthDate)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AboutUs)
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-primary toggle-status-btn" data-id="@item.Id">
-                                    @(@item.Active ? "Deactivate" : "Activate")
-                                </button>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Location)
-                            </td>
-                            <td>
                                 @Html.DisplayFor(modelItem => item.CreatedAt)
-                            </td>
-                            <td>
-
-                                <img src="@Html.DisplayFor(modelItem => item.Imagebath)"
-                                     height="80"
-                                     alt=""
-                                     loading="lazy" />
-
                             </td>
                         </tr>
                     }
@@ -101,32 +72,3 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    $(document).ready(function () {
-        $(".toggle-status-btn").click(function () {
-            var button = $(this);
-            var userId = button.data("id");
-
-            // Make the AJAX request
-            $.ajax({
-                url: '@Url.Action("ToggleActiveStatus", "Dashboard")',
-                type: 'POST',
-                data: { id: userId },
-                success: function (response) {
-                    if (response.success) {
-                        // Toggle the button text based on the new status
-                        var newStatus = response.activeStatus ? "Deactivate" : "Activate";
-                        button.text(newStatus);
-                    } else {
-                        alert("An error occurred while toggling the status.");
-                    }
-                },
-                error: function () {
-                    alert("An error occurred.");
-                }
-            });
-        });
-    });
-</script>

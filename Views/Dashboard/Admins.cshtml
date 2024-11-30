@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Final_Project_3amal.Models.User>
+
+@{
+    ViewData["Title"] = "Admins";
+    Layout = "_LayoutDashboard";
+}
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Admins Managmant </h1>
+            <p>Welcome to your admin dashboard!</p>
+            <a class="btn btn-primary" asp-action="CreateAdmin" > Create New Admin</a>
+        </div>
+    </div>
+</div>
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <div class="content-header">
+            <form asp-controller="Dashboard" asp-action="Admins" method="get">
+                <input class="search" type="Search" name="Search" aria-label="Search" placeholder="Search by (Id,Name)" />
+                <button class="searchbtn" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <div class="content-table">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedAt)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 ﻿@model (User Users,List<Final_Project_3amal.Models.Service> Services, List<Final_Project_3amal.Models.ImageService> ImageServices, List<Final_Project_3amal.Models.Category> Categories)
 
 @{
-    ViewData["Title"] = "@User.Identity.Name";
+    ViewData["Title"] = @Model.Users.FirstName + " " + @Model.Users.LastName;
 }
 
 <link rel="stylesheet" href="~/css/profile.css" />
@@ -9,35 +9,14 @@
 <div class="flex_column width_100">
     <div class="server_info_container">
         <div class="server_info_left">
-            <div class="top_info">
+            <div class="top_info" style="justify-content:flex-start">
                 <br />
 
                 <p>Location: @Model.Users.Location</p>
+                <p>Birth Date: @Model.Users.BirthDate</p>
+                <p>Email: @Model.Users.Email</p>
+                <p>Phone: @Model.Users.Phone</p>
                 <p>Count services: @Model.Services.Count</p>
-                @* <p>Count rating: 20</p>
-
-                <div class="flex_column_left">
-                    <div class="Reviews_star">
-                        <span>Quality of Service: </span>
-                        <div class="star">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
-                        </div>
-                    </div>
-
-                    <div class="Reviews_star">
-                        <span>Communication: </span>
-                        <div class="star">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
-                        </div>
-                    </div>
-                    <div class="Reviews_star">
-                        <span>On-Time Delivery: </span>
-                        <div class="star">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>Order completion rate: 80%</p> *@
 
             </div>
             <div class="bottom_info">
@@ -68,35 +47,50 @@
                     <h3 class="orange Suggestions">My Services:</h3>
                     <br />
                     <div class="grid Sugistes_services">
-                       @if (Model.Services != null && Model.Services.Count > 0)
+                        @if (Model.Services != null && Model.Services.Count > 0)
                         {
+                            <script src="~/js/Star.js"></script>
+
                             @foreach (var service in Model.Services)
                             {
-                                <a asp-action="Index" asp-controller="ServesInfo"
-                                   asp-route-id="@service.Id"
-                                   asp-route-name="@service.Name"
-                                   asp-route-category="@service.Category.Name"
-                                   asp-route-categoryid="@service.CategoryId"
-                                   asp-route-description="@service.Description"
-                                   asp-route-price="@service.Price"
-                                   asp-route-ratingAvg="@service.RatingAvg"
-                                   class="flex_column_left card_services">
-                                    @if (Model.ImageServices[0].ServiceId == service.Id)
-                                    {
-                                        // Assuming `imageService` contains the image data as a byte array
-                                        <img src="@Model.ImageServices[0].ImagePath" alt="Service Image" />
-
+                                <div>
+                                    @{
+                                        var _ImageService = Model.ImageServices.Where(x => x.ServiceId == service.Id).Select(x => x.ImagePath).ToList();
                                     }
-                                    <div class="card_services_text">
-                                        <h3>@service.Name</h3>
-                                        <p class="category">category: @service.Category.Name</p>
-                                        <div id="star_@service.Id" class="star">
-                                            <!-- Stars will be dynamically inserted here -->
+                                    <a asp-action="Index" asp-controller="ServesInfo"
+                                       asp-route-id="@service.Id"
+                                       asp-route-name="@service.Name"
+                                       asp-route-category="@service.Category.Name"
+                                       asp-route-categoryid="@service.Category.Id"
+                                       asp-route-description="@service.Description"
+                                       asp-route-price="@service.Price"
+                                       asp-route-ratingAvg="@service.RatingAvg"
+                                       asp-route-userid="@service.User.Id"
+                                       class="flex_column_left card_services">
+
+
+
+                                        @if (_ImageService != null && _ImageService.Count > 0)
+                                        {
+                                            <img src="@_ImageService[0]" alt="Service Image" />
+                                        }
+
+                                        <div class="card_services_text">
+                                            <h3 class="orange">@service.Name</h3>
+                                            <p>Provider: @service.User.FirstName @service.User.LastName</p>
+                                            <p class="category">Category: @service.Category.Name</p>
+                                            <div id="star_@service.Id" class="star">
+                                                <!-- Stars will be dynamically inserted here -->
+                                            </div>
+                                            <p>Price: @service.Price</p>
                                         </div>
-                                        <p>Price: @service.Price</p>
-                                    </div>
-                                </a>
-                                <script src="~/js/Star.js"></script>
+
+
+                                    </a>
+
+
+                                </div>
+
                                 <script>
                                     // Call setStarRating with the correct rating and unique service ID
                                     setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);

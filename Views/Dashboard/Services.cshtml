@@ -1,0 +1,81 @@
+﻿@model (List<Final_Project_3amal.Models.Service> Services,List<Final_Project_3amal.Models.Category> Categories,List<Final_Project_3amal.Models.User> Users)
+
+@{
+    ViewData["Title"] = "Services";
+    Layout = "_LayoutDashboard";
+}
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Services Managmant </h1>
+            <p>Welcome to your admin dashboard!</p>
+        </div>
+    </div>
+</div>
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <div class="content-header">
+            <form asp-controller="Dashboard" asp-action="Services" method="get">
+                <input class="search" type="Search" name="Search" aria-label="Search" placeholder="Search by (Id,Name)" />
+                <button class="searchbtn" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <div class="content-table">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Catygory
+                        </th>
+                        <th>
+                            Users
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Rating
+                        </th>
+   
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Services)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.Name)
+                            </td>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)
+                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RatingAvg)
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

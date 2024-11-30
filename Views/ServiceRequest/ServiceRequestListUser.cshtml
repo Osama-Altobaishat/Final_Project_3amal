@@ -1,0 +1,280 @@
+﻿@model (List<Final_Project_3amal.Models.ServiceRequest> serviceRequests,List<Final_Project_3amal.Models.Service> services , List<Final_Project_3amal.Models.User> users)
+
+<link rel="stylesheet" href="~/css/Serves_info.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="flex_column width_100">
+    <div class="server_info_container">
+        <div class="server_info">
+            <div class="server_info_right">
+                <div class="card_services_text">
+                    <h3 class="orange Suggestions">Service Requests:</h3>
+                </div>
+                @if (Model.serviceRequests.Count != 0)
+                {
+                    @foreach (var serviceRequest in Model.serviceRequests.OrderByDescending(s => s.Id))
+                    {
+                        <div class="job_details">
+                            <div>
+                                <h3 class="Suggestions">@serviceRequest.Title</h3>
+
+                                <p>
+                                    @serviceRequest.Description
+                                </p>
+                                <div class="row_det">
+                                    <p>
+                                        <i class="bi bi-geo-alt icon"></i>
+                                        @serviceRequest.Location
+                                    </p>
+                                    <p>
+                                        <i class="bi bi-currency-dollar icon"></i>
+                                        @serviceRequest.Price JD
+                                    </p>
+                                    <p>
+                                        <i class="bi bi-clock icon"></i>
+                                        @serviceRequest.SendDate
+                                    </p>
+                                </div>
+
+                            </div>
+                            <div>
+                                <a asp-action="ServiceRequestShowUser" asp-route-id="@serviceRequest.Id">
+                                    Show Details
+                                </a>
+                                @if (serviceRequest.Status == Status.Pending)
+                                {
+                                    <p style="color:orange;margin:0px">@serviceRequest.Status</p>
+                                }
+                                else if (serviceRequest.Status == Status.Accepted)
+                                {
+                                    <p style="color:green;margin:0px">@serviceRequest.Status</p>
+                                }
+                                else if (serviceRequest.Status == Status.Rejected)
+                                {
+                                    <p style="color:red;margin:0px">@serviceRequest.Status</p>
+                                }
+                                else if (serviceRequest.Status == Status.Completed)
+                                {
+                                    <p style="color:blue; margin:0px">@serviceRequest.Status</p>
+                                
+                                    @if (serviceRequest.IsReviewed == false)
+                                    {
+                                        <button type="button"
+                                                class="btn btn-primary"
+                                                style="background-color: #ff6600; border-color: #ff6600;"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                            Review
+                                        </button>
+                                    }
+                                }
+                                else if (serviceRequest.Status == Status.Cancelled)
+                                {
+                                    <p style="color:red">@serviceRequest.Status</p>
+                                }
+
+                            </div>
+                            <br />
+                        </div>
+                        <hr />
+                        @if (serviceRequest.IsReviewed == false)
+                        {
+
+
+                            <!-- Modal -->
+                            <style>
+                                .starSelecter_select-rating {
+                                    display: flex;
+                                    cursor: pointer;
+                                }
+
+                                .starSelecter_select {
+                                    font-size: 2rem;
+                                    color: #ccc;
+                                    transition: color 0.3s;
+                                }
+
+                                    .starSelecter_select.selected {
+                                        color: #ff6600;
+                                    }
+                            </style>
+                            <div class="modal fade"
+                                 id="exampleModal"
+                                 tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <!-- Changed to modal-lg for larger size -->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add New Service</h5>
+                                            <button type="button"
+                                                    class="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Image Slider (Carousel) -->
+                                            <div id="imageCarousel"
+                                                 class="carousel slide mb-3 position-relative"
+                                                 data-bs-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <!-- Images will be injected here -->
+                                                </div>
+
+                                                <button class="carousel-control-prev"
+                                                        style="height: 90%;"
+                                                        type="button"
+                                                        data-bs-target="#imageCarousel"
+                                                        data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon"
+                                                          aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Previous</span>
+                                                </button>
+
+                                                <button class="carousel-control-next"
+                                                        type="button"
+                                                        style="height: 90%;"
+                                                        data-bs-target="#imageCarousel"
+                                                        data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon"
+                                                          aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Next</span>
+                                                </button>
+                                            </div>
+
+
+                                            <!-- Form Start -->
+                                            <form id="serviceForm">
+                                                <!-- Name input -->
+                                                <div class="mb-3">
+                                                    <label for="Comment" class="form-label">Comment</label>
+                                                    <input class="input1" type="text" id="Comment" name="Comment" placeholder="Enter Comment" />
+                                                </div>
+
+                                                <div class="starSelecter_select-rating">
+                                                    <span class="starSelecter_select" data-value="1">&#9733;</span>
+                                                    <span class="starSelecter_select" data-value="2">&#9733;</span>
+                                                    <span class="starSelecter_select" data-value="3">&#9733;</span>
+                                                    <span class="starSelecter_select" data-value="4">&#9733;</span>
+                                                    <span class="starSelecter_select" data-value="5">&#9733;</span>
+                                                </div>
+                                                <p>Selected Rating: <span id="ratingValue">0</span></p>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <!-- Add button -->
+                                                    <input type="submit" id="submitServiceForm" class="btn btn-success">
+                                                </div>
+                                            </form>
+
+
+
+                                            <script>
+                                                const starSelecter_selects = document.querySelectorAll(
+                                                    ".starSelecter_select-rating .starSelecter_select"
+                                                );
+                                                const ratingValue = document.getElementById("ratingValue");
+                                                let rating = 0;
+
+                                                starSelecter_selects.forEach((starSelecter_select) => {
+                                                    starSelecter_select.addEventListener("mouseover", () => {
+                                                        // Add the hover effect to the current and all previous starSelecter_selects
+                                                        let currentstarSelecter_select = starSelecter_select;
+                                                        while (currentstarSelecter_select) {
+                                                            currentstarSelecter_select.style.color = "#ff6600cc"; // Change color to gold
+                                                            currentstarSelecter_select =
+                                                                currentstarSelecter_select.previousElementSibling;
+                                                        }
+                                                    });
+
+                                                    starSelecter_select.addEventListener("mouseout", () => {
+                                                        // Remove the hover effect from all starSelecter_selects
+                                                        starSelecter_selects.forEach((s) => {
+                                                            if (s.classList.contains("selected")) {
+                                                                return;
+                                                            }
+                                                            s.style.color = "#ccc"; // Reset color
+                                                        });
+                                                    });
+
+                                                    starSelecter_select.addEventListener("click", () => {
+                                                        // Remove the 'selected' class from all starSelecter_selects
+                                                        starSelecter_selects.forEach((s) => s.classList.remove("selected"));
+
+                                                        // Add the 'selected' class to the clicked starSelecter_select and all previous starSelecter_selects
+                                                        let currentstarSelecter_select = starSelecter_select;
+                                                        while (currentstarSelecter_select) {
+                                                            currentstarSelecter_select.classList.add("selected");
+                                                            currentstarSelecter_select =
+                                                                currentstarSelecter_select.previousElementSibling;
+                                                        }
+
+                                                        // Update the rating value
+                                                        ratingValue.textContent = starSelecter_select.dataset.value;
+                                                        rating = starSelecter_select.dataset.value;
+                                                    });
+                                                });
+
+                                                document.getElementById("serviceForm").addEventListener("submit", function (event) {
+                                                    event.preventDefault();
+
+
+                                                    const formData = new FormData();
+                                                    formData.append("Id", @serviceRequest.Id);
+                                                    formData.append("comment", document.getElementById("Comment").value);
+                                                    formData.append("rating", rating);
+                                                    formData.append("serviceId", @serviceRequest.ServiceId);
+
+
+                                                     $.ajax({
+                                                        url: '@Url.Action("AddReview", "ServiceRequest")',
+                                                        type: "POST",
+                                                        data: formData,
+                                                        processData: false,
+                                                        contentType: false,
+                                                        success: function (data) {
+                                                            Swal.fire({
+                                                                icon: 'success',
+                                                                title: 'Success',
+                                                                text: 'Review added successfully!',
+                                                                confirmButtonText: 'OK'
+                                                            }).then(() => {
+                                                                // Reload the page after the SweetAlert success
+                                                                location.reload();
+                                                            });
+
+                                                            console.log(data);
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Error',
+                                                                text: 'An error occurred while uploading images. Please try again.',
+                                                                confirmButtonText: 'OK'
+                                                            });
+
+                                                            console.error("Error:", error);
+                                                        }
+                                                    });
+                                                });
+
+                                            </script>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <h3 class="Suggestions">No Service Requests</h3>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

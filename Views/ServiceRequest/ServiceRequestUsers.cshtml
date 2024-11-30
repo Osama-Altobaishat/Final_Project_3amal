@@ -4,6 +4,8 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcG6ZRPG7IxaFAFbDDj62lhVnBkNtPWJ0&callback=initMap"
         async
         defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="flex_column width_100">
     <div class="server_info_container">
         <div class="server_info">
@@ -59,25 +61,29 @@
                                           placeholder="Enter description"></textarea>
                             </div>
 
-                            <!-- Category input -->
-                            <div class="flex_row_left w-100">
-                                <div class="w-25">
-                                    <label for="serviceDate" class="form-label">Date</label>
-                                    <input type="date" id="serviceDate" />
+                            <div class="d-flex flex-row flex-wrap w-100">
+                                <div class="d-flex flex-row flex-wrap w-100">
+                                    <div class="w-50">
+                                        <label for="serviceDate" class="form-label">Date</label>
+                                        <input type="date" id="serviceDate" />
+                                    </div>
+
+                                    <div class="w-50">
+                                        <label for="serviceTime" class="form-label">Time</label>
+                                        <input type="time" id="serviceTime" />
+                                    </div>
                                 </div>
 
-                                <div class="w-25">
-                                    <label for="serviceTime" class="form-label">Time</label>
-                                    <input type="time" id="serviceTime" />
+
+                                <div class="w-100">
+                                    <label for="serviceNumber" class="form-label">Price</label>
+                                    <input type="number"
+                                           id="serviceNumber"
+                                           placeholder="Enter Price"
+                                           min="1" />
                                 </div>
                             </div>
-                            <div class="mb-3 w-50">
-                                <label for="serviceNumber" class="form-label">Price</label>
-                                <input type="number"
-                                       id="serviceNumber"
-                                       placeholder="Enter Price"
-                                       min="1" />
-                            </div>
+                            
 
                             <div id="locationPopup" class="mb-3">
                                 <div class="popup-content">
@@ -248,33 +254,45 @@
 
     document.getElementById("serviceForm").addEventListener("submit", function (event) {
         event.preventDefault();
-            //console.log('test');
-            //console.log(markerLocation, locationDetails, $('#serviceName').val(), $('#serviceDesc').val(), $('#serviceDate').val() + $('#serviceTime').val(), $('#serviceNumber').val() ,@Model.Services.Id);
-            // Collect form data
-            var formData = {
-                serviceId: @Model.Services.Id,
-                locationNames: locationDetails.city + "/" + locationDetails.country,
-                lat: markerLocation.lat,
-                lng: markerLocation.lng,
-                serviceName: $('#serviceName').val(),
-                serviceDesc: $('#serviceDesc').val(),
-                serviceDate: $('#serviceDate').val() +" "+ $('#serviceTime').val(),
-                serviceNumber: $('#serviceNumber').val(),
-            };
-            console.log(formData);
 
-            // Perform AJAX request
-            $.ajax({
-                url: '/ServiceRequest/ServiceRequest',  // Replace with your controller URL
-                type: 'POST',
-                data: formData,
-                success: function (response) {
-                    alert('Data submitted successfully!');
-                    // You can perform other actions here, like clearing the form or updating the UI
-                },
-                error: function (xhr, status, error) {
-                    alert('There was an error: ' + error);
-                }
-            });
+        // Collect form data
+        var formData = {
+            serviceId: @Model.Services.Id,
+            locationNames: locationDetails.city + "/" + locationDetails.country,
+            lat: markerLocation.lat,
+            lng: markerLocation.lng,
+            serviceName: $('#serviceName').val(),
+            serviceDesc: $('#serviceDesc').val(),
+            serviceDate: $('#serviceDate').val() + " " + $('#serviceTime').val(),
+            serviceNumber: $('#serviceNumber').val(),
+        };
+        console.log(formData);
+
+        // Perform AJAX request
+        $.ajax({
+            url: '/ServiceRequest/ServiceRequest',  // Replace with your controller URL
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Data submitted successfully!',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Redirect to the list page
+                    window.location.href = '/ServiceRequest/ServiceRequestListUser';
+                });
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'There was an error: ' + error,
+                    confirmButtonText: 'OK'
+                });
+            }
         });
+    });
+
 </script>

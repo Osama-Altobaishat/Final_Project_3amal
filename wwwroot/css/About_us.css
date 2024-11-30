@@ -77,9 +77,6 @@
     font-size: 2.5em;
     margin-bottom: 30px;
     color: #ff6600;
-    opacity: 0;
-    animation: fadeIn 2s forwards 1.5s;
-    color: #ff6600;
 }
 
 .why-chooseabo {
@@ -152,8 +149,6 @@
 .p {
     line-height: 1.5;
     color: var(--text-color);
-    opacity: 0;
-    animation: fadeIn 2s forwards 1.5s;
 }
 
 @keyframes fadeIn {

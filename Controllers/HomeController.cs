@@ -9,7 +9,6 @@ using System.Security.Claims;
 
 namespace Final_Project_3amal.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -31,7 +30,7 @@ namespace Final_Project_3amal.Controllers
                 .ToListAsync();
 
             var service = await _context.Services
-               .Where(s => s.RatingAvg >= 4) // Filter by role
+               .Where(s => s.RatingAvg >= 0) // Filter by role
                .OrderBy(x => Guid.NewGuid()) // Randomize order
                .Take(4) // Select only 5 users
             .ToListAsync();

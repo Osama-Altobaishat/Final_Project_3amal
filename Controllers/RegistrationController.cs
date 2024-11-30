@@ -92,7 +92,7 @@ namespace Final_Project_3amal.Controllers
                     serviceProvider.Role = UserRole.Service_Provider;
 
                     serviceProvider.Location += @$"/{City}";
-                    serviceProvider.Active = true;
+                    serviceProvider.Active = false;
 
                     var passwordHasher = new PasswordHasher<User>();
 

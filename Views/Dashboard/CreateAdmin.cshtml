@@ -1,0 +1,108 @@
+﻿@{
+    Layout = "_LayoutDashboard";
+}
+
+<style>
+    /* General styles */
+    body.signUp {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    /* Form container */
+    .form {
+        width: 100%;
+        height: 95vh;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+    }
+
+        /* Heading */
+        .form h3 {
+            margin-bottom: 20px;
+            color: #333333;
+            text-align: center;
+        }
+
+        /* Label styling */
+        .form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555555;
+            font-size: 14px;
+        }
+
+        /* Input fields */
+        .form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        /* Button styling */
+        .form .button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+        }
+
+            .form .button:hover {
+                background-color: #0056b3;
+            }
+
+        /* Error message */
+        .form .error {
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: block;
+            text-align: center;
+        }
+
+</style>
+<div class="dashboard-content">
+    <div class="container-fluid">
+        <form asp-action="CreateAdmin" class="form content-header" enctype="multipart/form-data">
+            <h3>Create Admin</h3>
+            <label for="First_name">First name:</label>
+            <input type="text" placeholder="First name" name="FirstName" id="First_name" required />
+
+            <label for="Last_name">Last name:</label>
+            <input type="text" placeholder="Last name" name="LastName" id="Last_name" required />
+
+            <label for="Email">Email:</label>
+            <input type="email" name="Email" placeholder="Email" id="Email" required />
+
+            <label for="mobile_num">mobile Number:</label>
+            <input type="number" name="mobileNamber" placeholder="mobile Number" id="mobile_num" required />
+
+            <label for="password">Password:</label>
+            <input type="password" name="Password" placeholder="Password" id="password" required />
+
+            <label for="Confirmpassword">Confirm password:</label>
+            <input type="password" name="ConfirmPassword" placeholder="Confirm password" id="password" required />
+            <span class="error" style="color:red">@ViewBag.Error</span>
+
+            <button class="button">Create Admin</button>
+
+        </form>
+    </div>
+</div>

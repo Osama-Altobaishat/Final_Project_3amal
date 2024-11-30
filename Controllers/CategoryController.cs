@@ -15,20 +15,43 @@ namespace Final_Project_3amal.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int id, string name, int pageNumber = 1, int pageSize = 9)
+        public async Task<IActionResult> Index(int? id, string? name, int pageNumber = 1, int pageSize = 6, string? search = null, decimal? minPrice = null, decimal? maxPrice = null, decimal? Rating = null)
         {
-
-            // Get the total count of services for the category to calculate total pages
-            var totalServices = await _context.Services
-                .Where(s => s.CategoryId == id)
-                .CountAsync();
-
             // Apply pagination to the filtered services
-            var services = await _context.Services
-                .Where(s => s.CategoryId == id)
-                .Skip((pageNumber - 1) * pageSize)
+            var services = await _context.Services.ToListAsync();
+                
+            if (search != null && search != "")
+            {
+                services = services.Where(s => s.Name.Contains(search)).ToList();
+                ViewBag.search = search;
+            }
+            if (minPrice != null && maxPrice != null)
+            {
+                services = services.Where(s => s.Price >= minPrice && s.Price <= maxPrice).ToList();
+                ViewBag.minPrice = minPrice;
+                ViewBag.maxPrice = maxPrice;
+            }
+            if (Rating != null && Rating != 0)
+            {
+                services = services.Where(s => s.RatingAvg >= Rating).ToList();
+                ViewBag.Rating = Rating;
+            }
+            if (id != null && id != 0)
+            {
+                services = services.Where(s => s.CategoryId == id).ToList();
+                // Pass data to the view
+                ViewBag.CategoryId = id;
+                ViewBag.Name = name;
+            }
+            if(services == null)
+            {
+                return NotFound();
+            }
+            var totalServices = services.Count();
+
+            services =  services.Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToList();
 
             // Calculate total pages
             var totalPages = (int)Math.Ceiling((double)totalServices / pageSize);
@@ -57,10 +80,6 @@ namespace Final_Project_3amal.Controllers
             var category = _context.Categories.ToList();
 
             var model = (user: users, Categories: category, viewModels: viewModel, imageService: imageServices);
-
-            // Pass data to the view
-            ViewBag.CategoryId = id;
-            ViewBag.Name = name;
 
             return View(model);
         }

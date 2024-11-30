@@ -12,12 +12,12 @@
     width: 100%;
 }
 .server_info_right {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  background-color: #f2f2f2;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: var(--background-color-card);
+    border-radius: 10px;
+    box-shadow: var(--shadow-color);
 }
 .imgSlides {
     width: 100%;
@@ -26,18 +26,18 @@
     border-radius: 10px;
 }
 .server_info_container .server_info_left {
-  top: 12vh;
-  margin: 20px 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 30%;
-  height: 86vh;
-  padding: 10px;
-  background-color: #f2f2f2;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  position: sticky;
+    top: 12vh;
+    margin: 20px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    height: 86vh;
+    padding: 10px;
+    background-color: var(--background-color-card);
+    border-radius: 10px;
+    box-shadow: var(--shadow-color);
+    position: sticky;
 }
 .top_info {
     display: flex;
@@ -67,10 +67,10 @@
   text-decoration: none;
   color: black;
 }
-.profile:hover {
-  color: rgb(0, 0, 0, 0.8);
-  background-color: #f2f2f2;
-}
+    .profile:hover {
+        color: rgb(0, 0, 0, 0.8);
+        background-color: var(--background-color-card);
+    }
 .profile img {
   width: 80px;
   border-radius: 100%;
@@ -156,11 +156,14 @@
     margin-top: 20px;
     margin-bottom: 0px;
   }
-  .bottom_info {
-    align-items: center;
-    border-top: 0px solid rgb(0, 0, 0);
-    border-bottom: 2px solid rgb(0, 0, 0);
-  }
+    .server_info_left{
+        width:100%;
+    }
+    .bottom_info {
+        align-items: center;
+        border-top: 0px solid rgb(0, 0, 0);
+        border-bottom: 2px solid rgb(0, 0, 0);
+    }
   .profile {
     flex-direction: column;
     align-items: center;
@@ -186,6 +189,9 @@
     margin-top: 20px;
     margin-bottom: 0px;
   }
+    .server_info_left {
+        width: 100%;
+    }
   .bottom_info {
     align-items: center;
     border-top: 0px solid rgb(0, 0, 0);
@@ -258,4 +264,47 @@
 }
 .server_request_reject:hover {
   background-color: rgba(255, 0, 0, 0.803);
+}
+.job_details .row_det {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap:wrap;
+}
+p, h3, span {
+    color: var(--text-color);
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    form
+
+{
+    width: 100%;
+}
+
+}
+.profileProviders {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+}
+    .profileProviders img {
+        width: 80px;
+        border-radius: 100%;
+        margin: 20px 0px;
+    }
+
+    .profileProviders div {
+        padding-left: 10px;
+    }
+.about {
+    display: -webkit-box; /* Required for WebKit-based browsers */
+    -webkit-box-orient: vertical; /* Defines vertical text flow */
+    overflow: hidden; /* Hides overflowed content */
+    text-overflow: ellipsis; /* Adds "..." for overflowed content */
+    -webkit-line-clamp: 2; /* Limits text to 2 lines */
+    line-height: 1.5; /* Adjust line height as needed */
+    max-height: 3em; /* Adjust based on the line height */
 }

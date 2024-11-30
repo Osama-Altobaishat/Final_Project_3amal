@@ -1,8 +1,11 @@
 ﻿@model (Final_Project_3amal.Models.ServiceRequest serviceRequest, Final_Project_3amal.Models.Service service, Final_Project_3amal.Models.User user)
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <link rel="stylesheet" href="~/css/Serves_info.css" />
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcG6ZRPG7IxaFAFbDDj62lhVnBkNtPWJ0&callback=initMap"
         async
         defer></script>
+
 <style>
     .request_details {
         display: flex;
@@ -44,7 +47,8 @@
 
                         <h3 class="Suggestions">@Model.serviceRequest.Title</h3>
                         <p>Service: @Model.service.Name</p>
-                        
+                        <br />
+
                         @if (Model.serviceRequest.Status == Status.Pending)
                         {
                             <p style="color:orange">Order status: @Model.serviceRequest.Status</p>
@@ -67,34 +71,48 @@
                             Description:
                             @Model.serviceRequest.Description
                         </p>
+                        <br />
+
                         <p>Price: @Model.serviceRequest.Price JD</p>
-                        <p>Start Date: @Model.serviceRequest.StartDate</p>
+                        <br />
+
+                        <p>Date: @Model.serviceRequest.StartDate</p>
                         <br />
                         <p>Location: @Model.serviceRequest.Location</p>
-                        <p>Send Date: @Model.serviceRequest.SendDate</p>
+                        <br />
 
                         <div id="map"></div>
+
                         <br />
-                       
-                        <div class="flex_row_left">
+                        <p>Send Date: @Model.serviceRequest.SendDate</p>
+                        <br />
+
+                        <div class="d-flex flex-row-reverse">
                             @if (Model.serviceRequest.Status == Status.Pending)
                             {
-                                <button type="button" class="server_request_accept">
+                                <button type="button" class="server_request_accept"
+                                        onclick="updateStatus(@Model.serviceRequest.Id, 'accept')">
                                     Accept
                                 </button>
-                                <button type="button" class="server_request_reject">
+                                <button type="button" class="server_request_reject"
+                                        onclick="updateStatus(@Model.serviceRequest.Id, 'reject')">
                                     Reject
                                 </button>
-                            }else if (Model.serviceRequest.Status == Status.Accepted)
+                            }
+                            else if (Model.serviceRequest.Status == Status.Accepted)
                             {
-                                <button type="button" class="server_request_cancel">
-                                                                    Cancel
-                                                                </button>
-                                <button type="button" class="server_request_accept">
+                                <button type="button" class="server_request_reject"
+                                        onclick="updateStatus(@Model.serviceRequest.Id, 'cancel')">
+                                    Cancel
+                                </button>
+                                <button type="button" class="server_request_accept"
+                                        onclick="updateStatus(@Model.serviceRequest.Id, 'complete')">
                                     Complete
                                 </button>
+                            }else if (Model.serviceRequest.Status == Status.Completed)
+                            {
+                                <p>Finish Date: @Model.serviceRequest.FinishDate</p>
                             }
-
                         </div>
                     </div>
                 </div>
@@ -120,4 +138,42 @@
         });
         marker1.setPosition(loc);
     }
+</script>
+<script>
+    function updateStatus(requestId, action) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to ${action} this request?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, ${action} it!`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Make an AJAX call to the controller
+                $.ajax({
+                    url: '@Url.Action("UpdateStatus", "ServiceRequest")',
+                    type: 'POST',
+                    data: {
+                        requestId: requestId,
+                        action: action
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire('Success!', response.message, 'success').then(() => {
+                                location.reload(); // Reload the page to reflect changes
+                            });
+                        } else {
+                            Swal.fire('Error!', response.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error!', 'Something went wrong while updating the status.', 'error');
+                    }
+                });
+            }
+        });
+    }
+
 </script>

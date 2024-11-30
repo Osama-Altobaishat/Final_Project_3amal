@@ -6,6 +6,7 @@ using Final_Project_3amal.Models;
 using Microsoft.EntityFrameworkCore;
 using Final_Project_3amal.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Final_Project_3amal.Controllers
 {
@@ -24,8 +25,55 @@ namespace Final_Project_3amal.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
 
         [HttpPost]
+        public async Task<IActionResult> Dashboard(User user)
+        {
+            // Find user by email
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == user.Email);
+
+            // Verify if user exists and password is correct
+            if (existingUser != null && VerifyPassword(user.Password, existingUser.Password))
+            {
+                // Create claims for the user
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, existingUser.Id.ToString()),
+                    new Claim(ClaimTypes.Email, existingUser.Email),
+                    new Claim(ClaimTypes.MobilePhone, existingUser.Phone),
+                    new Claim(ClaimTypes.Name, $"{existingUser.FirstName} {existingUser.LastName}"),
+                    new Claim(ClaimTypes.Role, existingUser.Role.ToString()),
+                };
+
+                // Create claims identity
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                // Sign in the user with the created claims principal
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                // Get the user's services
+                var services = await _context.Services
+                    .Where(s => s.UserId == existingUser.Id)
+                    .Include(s => s.Category)  // Optionally include related data like Category
+                    .ToListAsync();
+
+                // Pass services to the view
+                ViewBag.Services = services;
+
+                // Redirect to home page or desired location after successful login
+                return RedirectToAction("Catygory", "Dashboard");
+            }
+            ModelState.AddModelError("", "Invalid username or password.");
+            ViewBag.Error = "Invalid email or password.";
+            return View(user);
+        }
+            [HttpPost]
         public async Task<IActionResult> Index(User user)
         {
             // Find user by email
@@ -87,6 +135,13 @@ namespace Final_Project_3amal.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogoutDashboard()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Dashboard", "Login");
         }
     }
 }

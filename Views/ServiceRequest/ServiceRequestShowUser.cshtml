@@ -1,0 +1,159 @@
+﻿@model (Final_Project_3amal.Models.ServiceRequest serviceRequest, Final_Project_3amal.Models.Service service, Final_Project_3amal.Models.User user)
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link rel="stylesheet" href="~/css/Serves_info.css" />
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcG6ZRPG7IxaFAFbDDj62lhVnBkNtPWJ0&callback=initMap"
+        async
+        defer></script>
+
+<style>
+    .request_details {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+        .request_details p {
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--background-color-white);
+            width: 100%;
+        }
+</style>
+
+
+<div class="flex_column width_100">
+    <div class="server_info_container">
+        <div class="server_info">
+            <div class="server_info_right">
+                <div class="card_services_text">
+                    <h3 class="orange Suggestions">request details</h3>
+                </div>
+
+                <div class="request_details">
+                    <div>
+                        <div class="profile">
+                            @if (Model.user.Imagebath != "No Image")
+                            {
+                                <img src="@Model.user.Imagebath" alt="@Model.user.Imagebath" />
+                            }
+                            else
+                            {
+                                <img src="~/Images/Default.jpg" alt="user" />
+                            }
+                            <span>@Model.user.FirstName @Model.user.LastName</span>
+                        </div>
+
+                        <h3 class="Suggestions">@Model.serviceRequest.Title</h3>
+                        <br />
+                        <p>Service: @Model.service.Name</p>
+                        <br />
+
+                        @if (Model.serviceRequest.Status == Status.Pending)
+                        {
+                            <p style="color:orange">Order status: @Model.serviceRequest.Status</p>
+                        }
+                        else if (Model.serviceRequest.Status == Status.Accepted)
+                        {
+                            <p style="color:green">Order status: @Model.serviceRequest.Status</p>
+                        }
+                        else if (Model.serviceRequest.Status == Status.Rejected)
+                        {
+                            <p style="color:red">Order status: @Model.serviceRequest.Status</p>
+                        }
+                        else if (Model.serviceRequest.Status == Status.Completed)
+                        {
+                            <p style="color:blue">Order status: @Model.serviceRequest.Status</p>
+                        }
+                        <br />
+
+                        <p>
+                            Description:
+                            @Model.serviceRequest.Description
+                        </p>
+                        <br />
+
+                        <p>Price: @Model.serviceRequest.Price JD</p>
+                        <br />
+
+                        <p>Date: @Model.serviceRequest.StartDate</p>
+                        <br />
+
+                        <p>Location: @Model.serviceRequest.Location</p>
+                        <br />
+
+                        <div id="map"></div>
+
+                        <br />
+                        <p>Send Date: @Model.serviceRequest.SendDate</p>
+                        <br />
+
+
+                        @if(Model.serviceRequest.Status == Status.Completed )
+                        {
+                            <p>Finish Date: @Model.serviceRequest.FinishDate</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let loc = { lat: @Model.serviceRequest.lat, lng: @Model.serviceRequest.lng };
+
+    function initMap() {
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: loc,
+        });
+        directionsRenderer.setMap(map);
+        marker1 = new google.maps.Marker({
+            position: loc,
+            map: map,
+        });
+        marker1.setPosition(loc);
+    }
+</script>
+<script>
+    function updateStatus(requestId, action) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to ${action} this request?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, ${action} it!`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Make an AJAX call to the controller
+                $.ajax({
+                    url: '@Url.Action("UpdateStatus", "ServiceRequest")',
+                    type: 'POST',
+                    data: {
+                        requestId: requestId,
+                        action: action
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire('Success!', response.message, 'success').then(() => {
+                                location.reload(); // Reload the page to reflect changes
+                            });
+                        } else {
+                            Swal.fire('Error!', response.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error!', 'Something went wrong while updating the status.', 'error');
+                    }
+                });
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,110 @@
+﻿@model  Final_Project_3amal.Models.User
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+<link rel="stylesheet" href="~/css/profile.css" />
+<!-- Include SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    .bottom_info img{
+        height:80px;
+    }
+</style>
+<div class="flex_column width_100">
+    <div class="server_info_container">
+        <div class="server_info_left">
+            <div class="top_info">
+                <div>
+                    <br />
+                    <p>Email: @Model.Email</p>
+                    <p>Phone: @Model.Phone</p>
+                </div>
+
+            </div>
+            <div class="bottom_info">
+                <br />
+                <div>
+                @if (Model.Imagebath != "No Image")
+                {
+                    <img src="@Model.Imagebath"
+                         class="rounded-circle"
+                         height="30"
+                         alt="Profile"
+                         loading="lazy" />
+                }
+                else
+                {
+                    <img src="~/Images/Default.jpg"
+                         class="rounded-circle"
+                         height="30"
+                         alt="Profile"
+                         loading="lazy" />
+                }
+                <span>@Model.FirstName @Model.LastName</span>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="server_info">
+            <div class="server_info_right">
+                <div class="server_info_text">
+                    <div class="flex_space_between">
+                        <h3 class="orange Suggestions">Edit your information: </h3>
+                    </div>
+                    <br />
+                    <form asp-action="Edit" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" for="Id" required />
+                        <div class="d-flex flex-row">
+                            <div class="form-group w-100">
+                                <label asp-for="FirstName" class="control-label"></label>
+                                <input name="FirstName" placeholder="First Name" class="form-control" required />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group w-100">
+                                <label asp-for="LastName" class="control-label"></label>
+                                <input name="LastName" placeholder="Last Name" class="form-control" required/>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input name="Email" placeholder="Email" class="form-control" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input type="password" name="Password" placeholder="Password" class="form-control" required/>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="ConfirmPassword" class="control-label">Confirm password</label>
+                            <input type="password" name="ConfirmPassword" placeholder="Confirm Password"  class="form-control" required/>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Phone" class="control-label"></label>
+                            <input name="Phone" placeholder="Phone Number" class="form-control" required />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Imagebath" class="control-label"></label>
+                            <input type="file" name="Imagebath" placeholder="Image" class="form-control" required />
+                            <span asp-validation-for="Imagebath" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Edit" class="btn btn-primary" />
+                        </div>
+                    </form>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

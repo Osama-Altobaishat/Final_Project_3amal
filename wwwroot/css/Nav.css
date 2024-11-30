@@ -52,6 +52,7 @@ nav {
     transition: all 0.3s ease;
     background-color: var(--background-color-nav);
     border: 0px;
+    width:100%;
 }
     .btLogout:hover {
         color: #ffffff;

@@ -15,29 +15,32 @@
         <a href="/"
            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <div class="logo">
-                <img src="../image/logo.png" alt="" />
+                <img src="~/Images/logo.png" alt="Logo" />
                 <span class="fs-4">Dashboard</span>
             </div>
         </a>
         <hr />
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a asp-action="Index" class="nav-link active">Category </a>
+                <a asp-action="Catygory"  asp-controller="Dashboard" class="nav-link">Category </a>
+            </li>
+            <li>
+                <a asp-action="Services" class="nav-link"> Services </a>
             </li>
             <li>
                 <a asp-action="Users" class="nav-link"> Users </a>
             </li>
             <li>
-                <a asp-action="Services" class="nav-link"> Service </a>
+                <a asp-action="Providers" class="nav-link"> Providers </a>
             </li>
             <li>
-                <a href="#" class="nav-link"> Users </a>
+                <a asp-action="Admins" class="nav-link"> Admin </a>
             </li>
         </ul>
         <hr />
-        <div class="logout">
-            <a href="#" class="nav-link text-white"> Logout</a>
-        </div>
+        <form asp-controller="Login" asp-action="LogoutDashboard" class="logout" method="post">
+            <button type="submit" style="background-color: transparent; border: none" class="nav-link text-white">Logout</button>
+        </form>
     </div>
 
     <!-- Content -->

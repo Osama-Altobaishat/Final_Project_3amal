@@ -1,52 +1,35 @@
 ﻿@model (List<Final_Project_3amal.Models.User> Users,List<Final_Project_3amal.Models.Service> Services, List<Final_Project_3amal.Models.Category> Categories, List<Final_Project_3amal.Models.ImageService> ImageServices)
-
+@using System.Security.Claims
 @{
-    ViewData["Title"] = "@User.Identity.Name";
+    ViewData["Title"] = @User.Identity.Name;
 }
-
 <link rel="stylesheet" href="../CSS/profile.Css" />
+<!-- Include SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="flex_column width_100">
     <div class="server_info_container">
         <div class="server_info_left">
             <div class="top_info">
-                <br />
+                <div>
+                    <br />
 
-                <p>Location: @User.FindFirst("Location")?.Value</p>
-                <p>Count services: 10</p>
-                <p>Count rating: 20</p>
+                    <p>Location: @User.FindFirst("Location")?.Value</p>
+                    <p>Barth Date: @User.FindFirst(ClaimTypes.DateOfBirth)?.Value</p>
+                    <p>Email: @User.FindFirst(ClaimTypes.Email)?.Value</p>
+                    <p>Phone: @User.FindFirst(ClaimTypes.MobilePhone)?.Value</p>
+                    <p>Count services: @Model.Services.Count</p>
 
-                <div class="flex_column_left">
-                    <div class="Reviews_star">
-                        <span>Quality of Service: </span>
-                        <div class="star">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
-                        </div>
-                    </div>
 
-                    <div class="Reviews_star">
-                        <span>Communication: </span>
-                        <div class="star">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
-                        </div>
-                    </div>
-                    <div class="Reviews_star">
-                        <span>On-Time Delivery: </span>
-                        <div class="star">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i>
-                        </div>
-                    </div>
                 </div>
-                <p>Order completion rate: 80%</p>
 
-
-                @* test *@
                 <!-- Button to trigger modal -->
                 <button type="button"
                         class="btn btn-primary"
+                        style="background-color: #ff6600; border-color: #ccc;"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
-                    Open Form Modal
+                    Add New Service
                 </button>
 
 
@@ -81,36 +64,62 @@
                     <div class="grid Sugistes_services">
                         @if (Model.Services != null && Model.Services.Count > 0)
                         {
+                            <script src="~/js/Star.js"></script>
+
                             @foreach (var service in Model.Services)
                             {
-                                <a asp-action="Index" asp-controller="ServesInfo"
-                                   asp-route-id="@service.Id"
-                                   asp-route-name="@service.Name"
-                                   asp-route-category="@service.Category.Name"
-                                   asp-route-categoryid="@service.Category.Id"
-                                   asp-route-description="@service.Description"
-                                   asp-route-price="@service.Price"
-                                   asp-route-ratingAvg="@service.RatingAvg"
-                                   asp-route-userid="@service.User.Id"
-                                   class="flex_column_left card_services">
-                                    @if (@Model.ImageServices[0].ServiceId == service.Id)
-                                    {
-
-                                        <img src="@Model.ImageServices[0].ImagePath" alt="Service Image" />
-
+                                <div>
+                                    @{
+                                        var _ImageService = Model.ImageServices.Where(x => x.ServiceId == service.Id).Select(x => x.ImagePath).ToList();
                                     }
-                                    
-                                    <div class="card_services_text">
-                                        <h3>@service.Name</h3>
-                                        <p>Provider: @service.User.FirstName @service.User.LastName</p>
-                                        <p class="category">category: @service.Category.Name</p>
-                                        <div id="star_@service.Id" class="star">
-                                            <!-- Stars will be dynamically inserted here -->
+                                    <a asp-action="Index" asp-controller="ServesInfo"
+                                       asp-route-id="@service.Id"
+                                       asp-route-name="@service.Name"
+                                       asp-route-category="@service.Category.Name"
+                                       asp-route-categoryid="@service.Category.Id"
+                                       asp-route-description="@service.Description"
+                                       asp-route-price="@service.Price"
+                                       asp-route-ratingAvg="@service.RatingAvg"
+                                       asp-route-userid="@service.User.Id"
+                                       class="flex_column_left card_services">
+
+
+
+                                        @if (_ImageService != null && _ImageService.Count > 0)
+                                        {
+                                            <img src="@_ImageService[0]" alt="Service Image" />
+                                        }
+
+                                        <div class="card_services_text">
+                                            <h3 class="orange">@service.Name</h3>
+                                            <p>Provider: @service.User.FirstName @service.User.LastName</p>
+                                            <p class="category">Category: @service.Category.Name</p>
+                                            <div id="star_@service.Id" class="star">
+                                                <!-- Stars will be dynamically inserted here -->
+                                            </div>
+                                            <p>Price: @service.Price</p>
                                         </div>
-                                        <p>Price: @service.Price</p>
-                                    </div>
-                                </a>
-                                <script src="~/js/Star.js"></script>
+
+
+                                    </a>
+                                    <button class="btn btn-danger" style="width:49%" onclick="deleteService(@service.Id)">Delete</button>
+                                    @if (_ImageService != null && _ImageService.Count > 0)
+                                    {
+                                        <button class="btn btn-success" style="width:49%" onclick="editService(
+                                                @service.Id,
+                                                '@service.Name',
+                                                @service.CategoryId,
+                                                '@service.Description',
+                                                @service.Price,
+                                                '@_ImageService[0]'
+                                            )">
+                                            Edit
+                                        </button>
+                                    }
+
+
+                                </div>
+
                                 <script>
                                     // Call setStarRating with the correct rating and unique service ID
                                     setStarRating(@Math.Round(service.RatingAvg, 1), @service.Id);
@@ -118,6 +127,7 @@
                             }
 
                         }
+
                         else
                         {
                             <p>No services available.</p>
@@ -180,6 +190,8 @@
                 <!-- Form Start -->
                 <form id="serviceForm">
                     <!-- Name input -->
+                    <input type="number" id="serviceId" name="serviceId" hidden />
+
                     <div class="mb-3">
                         <label for="serviceName" class="form-label">Name</label>
                         <input class="input1" type="text" id="serviceName" name="Name" placeholder="Enter name" />
@@ -226,6 +238,49 @@
     </div>
 </div>
 <script>
+    // Function to edit a service
+    function editService(serviceId, name, categoryId, description, price, imagePaths) {
+        // Sample data to populate the modal (replace with real data)
+
+
+        const data = {
+            serviceId: serviceId,
+            name: name,
+            price: price,
+            categoryId: categoryId,
+            description: description,
+            images: [imagePaths], // Array of image URLs
+        };
+
+        console.log(data);
+        // Populate form fields
+        document.getElementById("serviceId").value = data.serviceId;
+        document.getElementById("serviceName").value = data.name;
+        document.getElementById("servicePrice").value = data.price;
+        document.getElementById("serviceCategory").value = data.categoryId;
+        document.getElementById("serviceDesc").value = data.description;
+
+        // Populate carousel with images
+        const carouselInner = document.querySelector("#imageCarousel .carousel-inner");
+        carouselInner.innerHTML = ""; // Clear existing images
+        data.images.forEach((image, index) => {
+            const activeClass = index === 0 ? "active" : "";
+            const carouselItem = `
+                <div class="carousel-item ${activeClass}">
+                <img src="${image}" class="d-block w-100" alt="Image ${index + 1}">
+                </div>
+                `;
+            carouselInner.insertAdjacentHTML("beforeend", carouselItem);
+        });
+
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+        modal.show();
+    }
+
+
+</script>
+<script>
     let selectedFilestest = [];
 
     document
@@ -238,7 +293,6 @@
 
                 selectedFilestest.push(files[0]);
                 console.log(selectedFilestest);
-
 
                 reader.onload = function (e) {
                     const carouselInner = document.querySelector(
@@ -290,12 +344,10 @@
             selectedFilestest.splice(index, 1);
         }
         console.log(selectedFilestest);
+
         // If the deleted item was the active one, make the first remaining item active
         const items = carouselInner.querySelectorAll(".carousel-item");
-        if (
-            items.length > 0 &&
-            !carouselInner.querySelector(".carousel-item.active")
-        ) {
+        if (items.length > 0 && !carouselInner.querySelector(".carousel-item.active")) {
             items[0].classList.add("active");
         }
     }
@@ -303,7 +355,6 @@
     document.getElementById("serviceForm").addEventListener("submit", function (event) {
         event.preventDefault();
         console.log("Selected Files:", selectedFilestest);
-
 
         const formData = new FormData();
         for (let file of selectedFilestest) {
@@ -316,21 +367,113 @@
 
         console.log(selectedFilestest);
 
-        $.ajax({
-            url: '@Url.Action("CreateService", "Profile")',
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                alert("Images uploaded successfully!");
-                console.log(data);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error:", error);
-            }
-        });
+        const serviceId = document.getElementById("serviceId").value;
+
+        if (serviceId == "") { // Corrected null check
+            $.ajax({
+                url: '@Url.Action("CreateService", "Profile")',
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Service created successfully!',
+                    }).then(() => {
+                        // Reload the page after the success message
+                        location.reload();
+                    });
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to create the service. Please try again.',
+                    });
+                    console.error("Error:", error);
+                }
+            });
+        } else {
+            formData.append("id", serviceId);
+
+            $.ajax({
+                url: '@Url.Action("EditService", "Profile")',
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Service updated successfully!',
+                    }).then(() => {
+                        // Reload the page after the success message
+                        location.reload();
+                    });
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update the service. Please try again.',
+                    });
+                    console.error("Error:", error);
+                }
+            });
+        }
     });
 
+
+</script>
+<script>
+    function deleteService(serviceId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Make a request to the server to delete the service
+                fetch(`/Service/Delete/${serviceId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            Swal.fire(
+                                'Deleted!',
+                                'The service has been deleted.',
+                                'success'
+                            ).then(() => {
+                                // Reload the page after the success message
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                'There was an issue deleting the service.',
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire(
+                            'Error!',
+                            'An unexpected error occurred.',
+                            'error'
+                        );
+                    });
+            }
+        });
+    }
 
 </script>
